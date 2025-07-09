@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { View } from "react-native";
 import { useColorScheme, vars } from "nativewind";
 import { colors, colorsVars } from "./colors";
@@ -11,15 +11,13 @@ interface ThemeProviderProps {
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const { setColors, mode } = useThemeStore();
   const { colorScheme } = useColorScheme();
-  const [themeColors, setThemeColors] = useState<Record<string, string>>(
-    vars({}),
-  );
+
+  const currentMode = mode === "system" ? (colorScheme ?? "light") : mode;
+  const themeColors = vars(colorsVars[currentMode]);
 
   useEffect(() => {
-    const currentMode = mode === "system" ? (colorScheme ?? "light") : mode;
     setColors(colors[currentMode]);
-    setThemeColors(vars(colorsVars[currentMode]));
-  }, [mode, colorScheme, setColors]);
+  }, [mode, colorScheme, setColors, currentMode]);
 
   return (
     <View className="w-full h-full" style={themeColors}>

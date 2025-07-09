@@ -12,26 +12,27 @@ export type Colors = {
   successText: string;
 };
 
+const sharedColors = {
+  error: "#ef9a9a",
+  success: "#a3e4c1",
+  errorText: "#7c1f1f",
+  successText: "#0e6e3a",
+};
+
 export const colors = {
   dark: {
     background: "#1e2a38",
     primary: "#6ca8ea",
     surface: "#2c3e50",
-    error: "#ef9a9a",
-    success: "#a3e4c1",
     foreground: "#ffffff",
-    errorText: "#7c1f1f",
-    successText: "#0e6e3a",
+    ...sharedColors,
   },
   light: {
     background: "#FAFAF5",
     primary: "#4A90E2",
     surface: "#F0EFEA",
-    error: "#E57373",
-    success: "#73E887",
     foreground: "#333333",
-    errorText: "#AC2020",
-    successText: "#1DAF35",
+    ...sharedColors,
   },
 };
 
