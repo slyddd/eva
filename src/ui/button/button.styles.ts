@@ -16,11 +16,6 @@ export const BaseStyle = {
     full: "rounded-full",
     none: "rounded-none",
   },
-  shadow: {
-    shadowColor: "#000",
-    shadowOffset: { width: 20, height: -17 },
-    shadowRadius: 10,
-  },
 };
 
 export const LabelStyle = {
