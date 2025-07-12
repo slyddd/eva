@@ -3,15 +3,22 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    colors: {
-      background: "rgb(var(--background) / <alpha-value>)",
-      foreground: "rgb(var(--foreground) / <alpha-value>)",
-      primary: "rgb(var(--primary) / <alpha-value>)",
-      surface: "rgb(var(--surface) / <alpha-value>)",
-      error: "rgb(var(--error) / <alpha-value>)",
-      success: "rgb(var(--success) / <alpha-value>)",
-      errorText: "rgb(var(--errorText) / <alpha-value>)",
-      successText: "rgb(var(--successText) / <alpha-value>)",
+    extend: {
+      borderRadius: {
+        "el-sm": "0.4rem",
+        "el-md": "0.8rem",
+        "el-lg": "2rem",
+      },
+      colors: {
+        background: "rgb(var(--background) / <alpha-value>)",
+        foreground: "rgb(var(--foreground) / <alpha-value>)",
+        primary: "rgb(var(--primary) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        error: "rgb(var(--error) / <alpha-value>)",
+        success: "rgb(var(--success) / <alpha-value>)",
+        errorText: "rgb(var(--errorText) / <alpha-value>)",
+        successText: "rgb(var(--successText) / <alpha-value>)",
+      },
     },
   },
   plugins: [
