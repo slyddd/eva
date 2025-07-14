@@ -1,75 +1,117 @@
-import { createContext, use, useState } from "react";
-import { Pressable, PressableProps, Text, TextProps } from "react-native";
-import { BaseStyle, LabelStyle } from "./pill.styles";
+import { createContext, use } from "react";
+import { Text, TextProps, ViewProps } from "react-native";
+import Animated, { AnimatedProps } from "react-native-reanimated";
+import { PressAnimation } from "../animations/press";
 import { useThemeStore } from "../theme/theme.store";
+import { BaseStyle, LabelStyle } from "./pill.styles";
+import { useSelectablePill } from "./hooks/useSelectablePill";
+import { clsx } from "../utils/clsx";
 
+/**
+ * Pill component size options.
+ */
 type Size = "sm" | "md" | "lg";
 
-interface ButtonProps {
+/**
+ * Context value for pill button state.
+ */
+interface PillProps {
   size?: Size;
   selected?: boolean;
 }
 
+/**
+ * Common global props for styling.
+ */
 interface GlobalProps {
   className?: string;
 }
 
-const propsButtonContext = createContext<ButtonProps | null>(null);
+/**
+ * Context for sharing pill button state between subcomponents.
+ */
+const PillContext = createContext<PillProps | null>(null);
 
-interface BaseProps extends ButtonProps, GlobalProps, PressableProps {
-  onSelect?: (selected: boolean) => void;
+/**
+ * Props for the main Pill.Base component.
+ */
+interface BaseProps
+  extends PillProps,
+    Omit<AnimatedProps<ViewProps>, "className"> {
+  className?: string;
+  onChange?: (selected: boolean) => void;
   children?: React.ReactNode;
   disabled?: boolean;
   selectable?: boolean;
 }
 
+/**
+ * Pill.Base
+ * Main pill button component. Handles selection state and provides context to children.
+ */
 function Base({
   size = "md",
   className = "",
-  onSelect,
+  onChange,
   children,
   disabled = false,
   selectable = false,
-  selected = !selectable,
+  selected: selectedProps,
   ...props
 }: BaseProps) {
-  const [selectedState, setSelectedState] = useState(selected);
+  // Internal selected state
+  const { handlePress, selected } = useSelectablePill({
+    initialSelected: selectedProps,
+    disabled,
+    selectable,
+  });
 
-  const combinedClassName = [
-    "flex flex-row justify-between gap-2 items-center rounded-full border border-primary",
-    selectable ? "active:opacity-80 active:scale-95" : "",
+  // Compose className based on props and state
+  const combinedClassName = clsx(
+    "flex flex-row justify-between gap-2 items-center rounded-full border border-primary transition-colors",
+    selectable && "active:opacity-80 active:scale-95",
     BaseStyle.size[size],
     className,
-    selectedState ? BaseStyle.selected : BaseStyle.unselected,
-    disabled ? "opacity-40" : "",
-  ].join(" ");
+    selected ? BaseStyle.selected : BaseStyle.unselected,
+    disabled && "opacity-40",
+  );
 
   return (
-    <propsButtonContext.Provider value={{ size, selected: selectedState }}>
-      <Pressable
-        className={combinedClassName}
+    <PillContext.Provider value={{ size, selected }}>
+      <PressAnimation
         onPress={() => {
-          if (disabled || !selectable) return;
-          setSelectedState(!selectedState);
-          if (onSelect) {
-            onSelect(!selectedState);
-          }
+          handlePress();
+          onChange?.(!selected);
         }}
-        disabled={disabled}
-        {...props}
       >
-        {children}
-      </Pressable>
-    </propsButtonContext.Provider>
+        {(animatedStyle) => (
+          <Animated.View
+            className={combinedClassName}
+            aria-disabled={disabled}
+            style={selectable && animatedStyle}
+            {...props}
+          >
+            {children}
+          </Animated.View>
+        )}
+      </PressAnimation>
+    </PillContext.Provider>
   );
 }
 
+/**
+ * Props for Pill.Label component.
+ */
 interface LabelProps extends GlobalProps, TextProps {
   children?: React.ReactNode;
 }
 
+/**
+ * Pill.Label
+ * Renders the pill label, styled according to context (size, selected).
+ */
 function Label({ className = "", children, ...props }: LabelProps) {
-  const { size, selected } = use(propsButtonContext)!;
+  const { size, selected } = use(PillContext)!;
 
   const combinedClassName = [
     LabelStyle.size[size!],
@@ -84,22 +126,30 @@ function Label({ className = "", children, ...props }: LabelProps) {
   );
 }
 
+/**
+ * Props passed to icon children.
+ */
 interface IconChildrenProps {
   fill?: string;
   size?: number;
 }
 
+/**
+ * Pill.Icon
+ * Renders an icon, passing fill and size based on context and theme.
+ */
 function Icon({
   children,
 }: {
   children: (props: IconChildrenProps) => React.ReactNode;
 }) {
-  const { size, selected } = use(propsButtonContext)!;
+  const { size, selected } = use(PillContext) ?? {
+    size: "md",
+    selected: false,
+  };
   const { colors } = useThemeStore();
 
-  if (!colors) {
-    return null;
-  }
+  if (!colors) return null;
 
   const iconProps: IconChildrenProps = {
     fill: selected ? colors.background : colors.primary,
@@ -109,6 +159,9 @@ function Icon({
   return <>{children(iconProps)}</>;
 }
 
+/**
+ * Pill component API.
+ */
 export const Pill = {
   Base,
   Label,
