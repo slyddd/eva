@@ -1,23 +1,27 @@
-import { useThemeStore } from "@/ui/theme/theme.store";
-import { Text, View } from "react-native";
-import "@/global.css";
-import { Button } from "@/ui/button/button";
-import { InfoIcon } from "@/ui/icons/info";
-import { Pill } from "@/ui/pill/pill";
-import { useState } from "react";
+import { useThemeStore } from '@/ui/theme/theme.store';
+import { Text, View } from 'react-native';
+import '@/global.css';
+import { Button } from '@/ui/button/button';
+import { InfoIcon } from '@/ui/icons/info';
+import { Pill } from '@/ui/pill/pill';
+import { useState } from 'react';
+import { Input } from '@/ui/input/input';
+import { useForm } from 'react-hook-form';
 
 export default function Index() {
   const { setMode, mode } = useThemeStore();
-  const [test, setTest] = useState("test");
+  const [test, setTest] = useState('test');
+  const { control } = useForm();
+  const [password, setPassword] = useState(false);
 
   return (
-    <View className="flex flex-col justify-center items-center gap-10 flex-1">
-      <Text className="bg-background text-foreground p-4 rounded-lg">
+    <View className="flex flex-1 flex-col items-center justify-center gap-10">
+      <Text className="rounded-lg bg-background p-4 text-foreground">
         {mode}
         Edit app/index.tsx to edit this screen.
       </Text>
       <View className="flex flex-row gap-4">
-        <Button.Base onClick={() => setMode("dark")} color="success" size="lg">
+        <Button.Base onClick={() => setMode('dark')} color="primary" size="md">
           <Button.Label>Dark</Button.Label>
           <Button.Icon>
             {(props) => {
@@ -25,7 +29,7 @@ export default function Index() {
             }}
           </Button.Icon>
         </Button.Base>
-        <Button.Base onClick={() => setMode("light")}>
+        <Button.Base onClick={() => setMode('light')}>
           <Button.Icon>
             {(props) => {
               return <InfoIcon {...props} />;
@@ -33,7 +37,7 @@ export default function Index() {
           </Button.Icon>
           <Button.Label>Light</Button.Label>
         </Button.Base>
-        <Button.Base onClick={() => setMode("system")} size="sm">
+        <Button.Base onClick={() => setMode('system')} size="sm">
           <Button.Icon>
             {(props) => {
               return <InfoIcon {...props} />;
@@ -43,7 +47,7 @@ export default function Index() {
         </Button.Base>
       </View>
       <View className="flex flex-row gap-4">
-        <Pill.Base size="sm">
+        <Pill.Base selectable size="sm">
           <Pill.Icon>
             {(props) => {
               return <InfoIcon {...props} />;
@@ -64,7 +68,21 @@ export default function Index() {
           <Pill.Label>Selectable Pill</Pill.Label>
         </Pill.Base>
       </View>
-      <Text>prueba: {test}</Text>
+      <Text>
+        prueba: {test} {password ? 'true' : 'false'}
+      </Text>
+      <Input.Base>
+        <Input.TextField
+          name="test"
+          control={control}
+          placeholder="Test Input"
+          className="w-64"
+          secureTextEntry={!password}
+        />
+        <Input.Icon onPress={() => setPassword(!password)}>
+          {(props) => <InfoIcon {...props} />}
+        </Input.Icon>
+      </Input.Base>
     </View>
   );
 }
