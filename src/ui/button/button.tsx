@@ -1,24 +1,24 @@
-import { PressAnimation } from "@UI/animations/press";
-import { useThemeStore } from "@UI/theme/theme.store";
-import { createContext, use } from "react";
-import { PressableProps, Text, TextProps } from "react-native";
-import Animated from "react-native-reanimated";
-import { BaseStyle, LabelStyle } from "./button.styles";
+import { PressAnimation } from '@UI/animations/press';
+import { useThemeStore } from '@UI/theme/theme.store';
+import { createContext, use } from 'react';
+import { PressableProps, Text, TextProps } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { BaseStyle, LabelStyle } from './button.styles';
 
 /**
  * Button color options.
  */
-type Colors = "primary" | "error" | "success";
+type Colors = 'primary' | 'error' | 'success';
 
 /**
  * Button size options.
  */
-type Size = "sm" | "md" | "lg";
+type Size = 'sm' | 'md' | 'lg';
 
 /**
  * Button border radius options.
  */
-type Radius = "sm" | "md" | "lg" | "full" | "none";
+type Radius = 'sm' | 'md' | 'lg' | 'full' | 'none';
 
 /**
  * Props shared by all button components.
@@ -48,6 +48,7 @@ interface BaseProps extends ButtonProps, GlobalProps, PressableProps {
   children?: React.ReactNode;
   disabled?: boolean;
   radius?: Radius;
+  shadow?: boolean;
 }
 
 /**
@@ -55,24 +56,25 @@ interface BaseProps extends ButtonProps, GlobalProps, PressableProps {
  * Handles press animation, styling, and disabled state.
  */
 function Base({
-  color = "primary",
-  size = "md",
-  radius = "md",
-  className = "",
+  color = 'primary',
+  size = 'md',
+  radius = 'md',
+  className = '',
   onClick,
   children,
   disabled = false,
+  shadow = true,
   ...props
 }: BaseProps) {
   // Combine all class names for styling.
   const combinedClassName = [
-    "flex flex-row justify-between gap-2 items-center",
+    'flex flex-row justify-between gap-2 items-center',
     BaseStyle.color[color],
     BaseStyle.size[size],
     BaseStyle.radius[radius],
-    disabled ? "opacity-40" : "",
+    disabled ? 'opacity-40' : '',
     className,
-  ].join(" ");
+  ].join(' ');
 
   return (
     <ButtonContext.Provider value={{ color, size }}>
@@ -89,13 +91,13 @@ function Base({
             style={
               [
                 animatedStyle,
-                {
+                shadow && {
                   boxShadow: [
                     {
                       offsetX: 0,
                       offsetY: 3,
                       blurRadius: 10,
-                      color: "rgba(0, 0, 0, 0.2)",
+                      color: 'rgba(0, 0, 0, 0.2)',
                       spreadDistance: 1,
                     },
                   ],
@@ -123,18 +125,18 @@ interface LabelProps extends GlobalProps, TextProps {
  * Label component for button text.
  * Applies color and size from context.
  */
-function Label({ className = "", children, ...props }: LabelProps) {
+function Label({ className = '', children, ...props }: LabelProps) {
   const { color, size } = use(ButtonContext)!;
   const combinedClassName = [
-    "font-bold",
+    'font-bold',
     LabelStyle.color[color!],
     LabelStyle.size[size!],
     className,
-  ].join(" ");
+  ].join(' ');
 
   return (
     <Text className={combinedClassName} {...props}>
-      {children || "Button"}
+      {children || 'Button'}
     </Text>
   );
 }
@@ -165,12 +167,12 @@ function Icon({
 
   // Determine icon color based on button color.
   const colorCode =
-    color === "primary" ? colors.background : colors[`${color}Text`];
+    color === 'primary' ? colors.background : colors[`${color}Text`];
 
   // Determine icon size based on button size.
   const iconProps: IconChildrenProps = {
     fill: colorCode,
-    size: size === "sm" ? 16 : size === "md" ? 20 : 24,
+    size: size === 'sm' ? 16 : size === 'md' ? 20 : 24,
   };
 
   return <>{children(iconProps)}</>;

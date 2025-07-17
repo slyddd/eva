@@ -1,0 +1,145 @@
+import { TextInput, TextInputProps, View } from 'react-native';
+import { Control, FieldValues, useController } from 'react-hook-form';
+import { createContext, use } from 'react';
+import { clsx } from '../utils/clsx';
+import { BaseStyle, TextFieldStyle } from './input.styles';
+import { Button } from '../button/button';
+import { useThemeStore } from '../theme/theme.store';
+
+/**
+ * Button color options.
+ */
+type Colors = 'primary' | 'error';
+
+/**
+ * Button size options.
+ */
+type Size = 'sm' | 'md' | 'lg';
+
+/**
+ * Button border radius options.
+ */
+type Radius = 'sm' | 'md' | 'lg' | 'full' | 'none';
+
+/**
+ * Props for global styling.
+ */
+interface GlobalProps {
+  className?: string;
+}
+
+interface InputProps {
+  color?: Colors;
+  size?: Size;
+}
+
+const InputContext = createContext<InputProps | null>(null);
+
+interface BaseProps extends InputProps, GlobalProps {
+  radius?: Radius;
+  disabled?: boolean;
+  children?: React.ReactNode;
+}
+
+function Base({
+  className = '',
+  color = 'primary',
+  radius = 'md',
+  size = 'md',
+  disabled = false,
+  children,
+}: BaseProps) {
+  const combinedClassName = clsx(
+    'flex flex-row justify-between items-center gap-2',
+    BaseStyle.size[size],
+    BaseStyle.color[color],
+    BaseStyle.radius[radius],
+    disabled ? 'opacity-50' : '',
+    className,
+  );
+
+  return (
+    <InputContext.Provider value={{ color, size }}>
+      <View
+        className={combinedClassName}
+        style={{
+          boxShadow: [
+            {
+              offsetX: 0,
+              offsetY: 3,
+              blurRadius: 10,
+              color: 'rgba(0, 0, 0, 0.2)',
+              spreadDistance: 1,
+            },
+          ],
+        }}
+      >
+        {children}
+      </View>
+    </InputContext.Provider>
+  );
+}
+
+interface TextFieldProps extends TextInputProps, GlobalProps {
+  name: string;
+  control: Control<FieldValues, any, FieldValues>;
+}
+
+function TextField({ name, control, className, ...props }: TextFieldProps) {
+  const {} = useController({
+    name,
+    control,
+    defaultValue: '',
+  });
+  const { color = 'primary', size = 'md' } = use(InputContext)!;
+
+  const combinedClassName = clsx(
+    'w-full',
+    TextFieldStyle.color[color],
+    TextFieldStyle.size[size],
+    className,
+  );
+
+  return <TextInput className={combinedClassName} {...props} />;
+}
+
+interface IconChildrenProps {
+  fill?: string;
+  size?: number;
+}
+
+interface IconProps {
+  children: (props: IconChildrenProps) => React.ReactNode;
+  onPress?: () => void;
+}
+
+function Icon({ children, onPress }: IconProps) {
+  const { color = 'primary', size = 'md' } = use(InputContext)!;
+  const { colors } = useThemeStore();
+  const iconProps: IconChildrenProps = {
+    fill: color === 'primary' ? colors?.background : colors?.errorText,
+    size: size === 'sm' ? 16 : size === 'md' ? 20 : 24,
+  };
+
+  if (onPress) {
+    return (
+      <Button.Base
+        size={size}
+        color={color}
+        onClick={onPress}
+        className="px-0 py-0"
+        shadow={false}
+      >
+        <>{children(iconProps)}</>
+      </Button.Base>
+    );
+  }
+
+  return <>{children(iconProps)}</>;
+}
+
+export const Input = {
+  Base,
+  TextField,
+  Icon,
+};
