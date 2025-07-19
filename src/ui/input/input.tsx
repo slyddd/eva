@@ -1,4 +1,9 @@
-import { TextInput, TextInputProps, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  TextInput,
+  TextInputProps,
+  View,
+} from 'react-native';
 import { Control, FieldValues, useController } from 'react-hook-form';
 import { createContext, use } from 'react';
 import { clsx } from '../utils/clsx';
@@ -39,6 +44,8 @@ interface BaseProps extends InputProps, GlobalProps {
   radius?: Radius;
   disabled?: boolean;
   children?: React.ReactNode;
+  width?: number;
+  height?: number;
 }
 
 function Base({
@@ -50,7 +57,7 @@ function Base({
   children,
 }: BaseProps) {
   const combinedClassName = clsx(
-    'flex flex-row justify-between items-center gap-2',
+    'flex flex-row justify-between items-center gap-2 relative max-w-full w-full h-fit',
     BaseStyle.size[size],
     BaseStyle.color[color],
     BaseStyle.radius[radius],
@@ -94,7 +101,7 @@ function TextField({ name, control, className, ...props }: TextFieldProps) {
   const { color = 'primary', size = 'md' } = use(InputContext)!;
 
   const combinedClassName = clsx(
-    'w-full',
+    'flex-1',
     TextFieldStyle.color[color],
     TextFieldStyle.size[size],
     className,
@@ -118,19 +125,15 @@ function Icon({ children, onPress }: IconProps) {
   const { colors } = useThemeStore();
   const iconProps: IconChildrenProps = {
     fill: color === 'primary' ? colors?.background : colors?.errorText,
-    size: size === 'sm' ? 16 : size === 'md' ? 20 : 24,
+    size: size === 'sm' ? 14 : size === 'md' ? 18 : 22,
   };
 
   if (onPress) {
     return (
-      <Button.Base
-        size={size}
-        color={color}
-        onClick={onPress}
-        className="px-0 py-0"
-        shadow={false}
-      >
-        <>{children(iconProps)}</>
+      <Button.Base size="none" color={color} onClick={onPress} shadow={false}>
+        <Button.Icon>
+          {({ fill, size }) => children({ fill, size })}
+        </Button.Icon>
       </Button.Base>
     );
   }
@@ -138,8 +141,17 @@ function Icon({ children, onPress }: IconProps) {
   return <>{children(iconProps)}</>;
 }
 
+function ElevateOnKeyboard({ children }: { children: React.ReactNode }) {
+  return (
+    <KeyboardAvoidingView behavior="padding" className="flex-1">
+      {children}
+    </KeyboardAvoidingView>
+  );
+}
+
 export const Input = {
   Base,
   TextField,
   Icon,
+  ElevateOnKeyboard,
 };

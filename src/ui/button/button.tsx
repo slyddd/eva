@@ -1,9 +1,10 @@
 import { PressAnimation } from '@UI/animations/press';
 import { useThemeStore } from '@UI/theme/theme.store';
 import { createContext, use } from 'react';
-import { PressableProps, Text, TextProps } from 'react-native';
+import { PixelRatio, PressableProps, Text, TextProps } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BaseStyle, LabelStyle } from './button.styles';
+import { clsx } from '../utils/clsx';
 
 /**
  * Button color options.
@@ -13,7 +14,7 @@ type Colors = 'primary' | 'error' | 'success';
 /**
  * Button size options.
  */
-type Size = 'sm' | 'md' | 'lg';
+type Size = 'none' | 'sm' | 'md' | 'lg';
 
 /**
  * Button border radius options.
@@ -49,6 +50,8 @@ interface BaseProps extends ButtonProps, GlobalProps, PressableProps {
   disabled?: boolean;
   radius?: Radius;
   shadow?: boolean;
+  width?: number;
+  height?: number;
 }
 
 /**
@@ -64,11 +67,13 @@ function Base({
   children,
   disabled = false,
   shadow = true,
+  width,
+  height,
   ...props
 }: BaseProps) {
   // Combine all class names for styling.
   const combinedClassName = [
-    'flex flex-row justify-between gap-2 items-center',
+    'flex flex-row justify-between gap-2 items-center w-fit h-fit',
     BaseStyle.color[color],
     BaseStyle.size[size],
     BaseStyle.radius[radius],
@@ -102,6 +107,11 @@ function Base({
                     },
                   ],
                 },
+                {
+                  width: width && PixelRatio.getPixelSizeForLayoutSize(width),
+                  height:
+                    height && PixelRatio.getPixelSizeForLayoutSize(height),
+                },
               ] as any
             }
             {...props}
@@ -119,20 +129,22 @@ function Base({
  */
 interface LabelProps extends GlobalProps, TextProps {
   children?: React.ReactNode;
+  center?: boolean;
 }
 
 /**
  * Label component for button text.
  * Applies color and size from context.
  */
-function Label({ className = '', children, ...props }: LabelProps) {
+function Label({ className = '', center, children, ...props }: LabelProps) {
   const { color, size } = use(ButtonContext)!;
-  const combinedClassName = [
+  const combinedClassName = clsx(
     'font-bold',
+    center && 'm-auto text-center',
     LabelStyle.color[color!],
     LabelStyle.size[size!],
     className,
-  ].join(' ');
+  );
 
   return (
     <Text className={combinedClassName} {...props}>

@@ -14,9 +14,9 @@ export const BaseStyle = {
    * - success: Success background color.
    */
   color: {
-    primary: "bg-primary",
-    error: "bg-error",
-    success: "bg-success",
+    primary: 'bg-primary',
+    error: 'bg-error',
+    success: 'bg-success',
   },
   /**
    * Size variants for element dimensions and padding.
@@ -39,11 +39,11 @@ export const BaseStyle = {
    * - none: No rounding.
    */
   radius: {
-    sm: "rounded-el-sm",
-    md: "rounded-el-md",
-    lg: "rounded-el-lg",
-    full: "rounded-full",
-    none: "rounded-none",
+    sm: 'rounded-el-sm',
+    md: 'rounded-el-md',
+    lg: 'rounded-el-lg',
+    full: 'rounded-full',
+    none: 'rounded-none',
   },
 };
 
@@ -62,9 +62,9 @@ export const LabelStyle = {
    * - success: Success text color.
    */
   color: {
-    primary: "text-background",
-    error: "text-errorText",
-    success: "text-successText",
+    primary: 'text-background',
+    error: 'text-errorText',
+    success: 'text-successText',
   },
   /**
    * Size variants for text size.
