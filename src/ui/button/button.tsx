@@ -172,7 +172,7 @@ function Icon({
   // Determine icon size based on button size.
   const iconProps: IconChildrenProps = {
     fill: colorCode,
-    size: size === 'sm' ? 16 : size === 'md' ? 20 : 24,
+    size: size === 'sm' || size === 'none' ? 16 : size === 'md' ? 20 : 24,
   };
 
   return <>{children(iconProps)}</>;

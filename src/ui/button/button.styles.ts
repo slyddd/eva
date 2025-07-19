@@ -25,9 +25,10 @@ export const BaseStyle = {
    * - lg: Large size.
    */
   size: {
-    sm: "h-fit w-fit py-2 px-3 max-w-32 max-h-10",
-    md: "h-fit w-fit py-3 px-4 max-w-40 max-h-12",
-    lg: "h-fit w-fit py-4 px-5 max-w-48 max-h-14",
+    none: 'py-0 px-0',
+    sm: 'py-2 px-3',
+    md: 'py-3 px-4',
+    lg: 'py-4 px-5',
   },
   /**
    * Border radius variants for rounded corners.
@@ -72,8 +73,9 @@ export const LabelStyle = {
    * - lg: Large text.
    */
   size: {
-    sm: "text-sm",
-    md: "text-base",
-    lg: "text-lg",
+    none: 'text-sm',
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg',
   },
 };

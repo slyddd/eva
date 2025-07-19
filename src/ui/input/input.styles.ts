@@ -24,9 +24,9 @@ export const BaseStyle = {
    * - lg: Large size.
    */
   size: {
-    sm: 'h-fit w-fit py-1 px-3 max-w-full',
-    md: 'h-fit w-fit py-2 px-4 max-w-full',
-    lg: 'h-fit w-fit py-3 px-5 max-w-full',
+    sm: 'py-1 px-3',
+    md: 'py-2 px-4',
+    lg: 'py-3 px-5',
   },
   /**
    * Border radius variants for rounded corners.
