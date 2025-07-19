@@ -12,27 +12,58 @@ export type Colors = {
   successText: string;
 };
 
-const sharedColors = {
-  error: "#ef9a9a",
-  success: "#a3e4c1",
-  errorText: "#7c1f1f",
-  successText: "#0e6e3a",
+export type Gradients = {
+  background: [string, string];
+  backgroundError?: [string, string];
+  surface?: [string, string];
+  surfaceError?: [string, string];
 };
 
-export const colors = {
+const sharedColors = {
+  error: '#ef9a9a',
+  success: '#a3e4c1',
+  errorText: '#7c1f1f',
+  successText: '#0e6e3a',
+};
+
+export const colors: {
+  dark: Colors;
+  light: Colors;
+} = {
   dark: {
-    background: "#1e2a38",
-    primary: "#6ca8ea",
-    surface: "#2c3e50",
-    foreground: "#ffffff",
+    background: '#1e2a38',
+    primary: '#6ca8ea',
+    surface: '#2c3e50',
+    foreground: '#ffffff',
     ...sharedColors,
   },
   light: {
-    background: "#FAFAF5",
-    primary: "#4A90E2",
-    surface: "#F0EFEA",
-    foreground: "#333333",
+    background: '#FAFAF5',
+    primary: '#4A90E2',
+    surface: '#F0EFEA',
+    foreground: '#333333',
     ...sharedColors,
+  },
+};
+
+/**
+ * Gradient definitions for light and dark themes.
+ */
+export const gradients: {
+  dark: Gradients;
+  light: Gradients;
+} = {
+  dark: {
+    background: [colors.dark.background, colors.dark.surface],
+    backgroundError: [colors.dark.background, '#352732'],
+    surface: [colors.dark.surface, '#1e2a38'],
+    surfaceError: [colors.dark.surface, '#3c3847'],
+  },
+  light: {
+    background: [colors.light.background, colors.light.surface],
+    backgroundError: [colors.light.background, '#F0EFEA'],
+    surface: [colors.light.surface, '#F0EFEA'],
+    surfaceError: [colors.light.surface, '#F0EFEA'],
   },
 };
 
