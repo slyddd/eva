@@ -1,12 +1,12 @@
-import { Button } from '@/ui/button/button';
-import { Icon } from '@/ui/icon/icon';
-import { Input } from '@/ui/input/input';
-import { useThemeStore } from '@/ui/theme/theme.store';
+import { Button } from '@ui/button';
+import { Icon } from '@/ui/icon';
+import { Input } from '@ui/input/input';
+import { useThemeStore } from '@ui/theme/theme.store';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, PixelRatio, Text, View } from 'react-native';
+import { PixelRatio, Text, View } from 'react-native';
 
 export default function Login() {
   const { gradients } = useThemeStore();
@@ -18,7 +18,7 @@ export default function Login() {
 
   return (
     <Input.ElevateOnKeyboard>
-      <View className="flex flex-1 items-center justify-end bg-background">
+      <View className="flex flex-1 items-center justify-end">
         <Image
           source="https://placehold.co/400"
           placeholder={{
@@ -75,7 +75,7 @@ export default function Login() {
               </Input.Icon>
             </Input.Base>
           </View>
-          <Button.Base width={50}>
+          <Button.Base width={100}>
             <Button.Label center>Iniciar</Button.Label>
           </Button.Base>
         </LinearGradient>

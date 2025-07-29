@@ -15,7 +15,7 @@ export default function Index() {
   });
 
   return (
-    <View className="flex flex-1 flex-col items-center justify-center gap-10 bg-background">
+    <View className="flex flex-1 flex-col items-center justify-center gap-10">
       <View className="flex flex-col items-center gap-8">
         <Text className="text-4xl font-bold text-foreground">Bienvenido</Text>
         <Image

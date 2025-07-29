@@ -1,22 +1,39 @@
-import { PixelRatio, Text, View } from 'react-native';
+import { useThemeStore } from '@ui/theme/theme.store';
+import { Button } from '@ui/button';
 import { Image } from 'expo-image';
-import { useEffect, useState } from 'react';
-import { Button } from '@/ui/button/button';
-import { InfoIcon } from '@/ui/icon/icons/info';
 import { useRouter } from 'expo-router';
+import { MotiPressable } from 'moti/interactions';
+import { useEffect, useRef, useState } from 'react';
+import { PixelRatio, Text, View } from 'react-native';
 
 export default function Introduction() {
   const [position, setPosition] = useState(0);
+  const intervalRef = useRef<number | null>(null);
+  const { colors } = useThemeStore();
   const blurhash =
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   const router = useRouter();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  // Helper to start the interval
+  const startInterval = () => {
+    intervalRef.current = setInterval(() => {
       setPosition((prev) => (prev + 1) % 5);
     }, 5000);
-    return () => clearInterval(interval);
+  };
+
+  useEffect(() => {
+    startInterval();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, []);
+
+  // When pressing a dot, set position and reset interval
+  const handleDotPress = (index: number) => {
+    setPosition(index);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    startInterval();
+  };
 
   return (
     <View className="flex-1 items-center justify-center">
@@ -39,20 +56,30 @@ export default function Introduction() {
         />
         <View className="flex flex-row items-center justify-center gap-3">
           {[...Array(5)].map((_, index) => (
-            <View
-              className={`size-3 rounded-full bg-primary transition-transform duration-1000 ${position === index ? 'scale-[2]' : 'scale-100'}`}
+            <MotiPressable
               key={index}
-              onTouchStart={() => setPosition(index)}
+              onPress={() => handleDotPress(index)}
+              animate={{
+                scale: position === index ? 2 : 1,
+                opacity: position === index ? 1 : 0.5,
+              }}
+              transition={{ type: 'timing', duration: 300 }}
+              style={{
+                width: PixelRatio.getPixelSizeForLayoutSize(5),
+                height: PixelRatio.getPixelSizeForLayoutSize(5),
+                borderRadius: 9999,
+                backgroundColor: colors?.primary ?? '#fff',
+              }}
             />
           ))}
         </View>
-        <Button.Base width={100}>
+        <Button.Base width={100} onPress={() => router.push('/register/1')}>
           <Button.Label center>Continuar</Button.Label>
         </Button.Base>
         <Button.Base
           className="bg-transparent px-0 py-0"
           shadow={false}
-          onClick={() => router.push('/login')}
+          onPress={() => router.push('/login')}
         >
           <Button.Label className="text-primary">
             Ya tengo una cuenta
