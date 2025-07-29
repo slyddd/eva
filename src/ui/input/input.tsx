@@ -1,15 +1,15 @@
+import { Button } from '@ui/button';
+import { useThemeStore } from '@ui/theme/theme.store';
+import clsx from 'clsx/lite';
+import { createContext, use } from 'react';
+import { Control, FieldValues, useController } from 'react-hook-form';
 import {
   KeyboardAvoidingView,
   TextInput,
   TextInputProps,
   View,
 } from 'react-native';
-import { Control, FieldValues, useController } from 'react-hook-form';
-import { createContext, use } from 'react';
-import { clsx } from '../utils/clsx';
 import { BaseStyle, TextFieldStyle } from './input.styles';
-import { Button } from '../button/button';
-import { useThemeStore } from '../theme/theme.store';
 
 /**
  * Button color options.
@@ -130,7 +130,7 @@ function Icon({ children, onPress }: IconProps) {
 
   if (onPress) {
     return (
-      <Button.Base size="none" color={color} onClick={onPress} shadow={false}>
+      <Button.Base size="none" color={color} onPress={onPress} shadow={false}>
         <Button.Icon>
           {({ fill, size }) => children({ fill, size })}
         </Button.Icon>

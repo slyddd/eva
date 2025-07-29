@@ -1,16 +1,17 @@
-import { createContext, use } from "react";
-import { Text, TextProps, ViewProps } from "react-native";
-import Animated, { AnimatedProps } from "react-native-reanimated";
-import { PressAnimation } from "../animations/press";
-import { useThemeStore } from "../theme/theme.store";
-import { BaseStyle, LabelStyle } from "./pill.styles";
-import { useSelectablePill } from "./hooks/useSelectablePill";
-import { clsx } from "../utils/clsx";
+import { animations } from '@ui/animations';
+import { useThemeStore } from '@ui/theme/theme.store';
+import clsx from 'clsx/lite';
+import { createContext, use, useMemo } from 'react';
+import { Text, TextProps, View, ViewProps } from 'react-native';
+import Animated, { AnimatedProps } from 'react-native-reanimated';
+import { useSelectablePill } from './hooks/useSelectablePill';
+import { BaseStyle, LabelStyle } from './pill.styles';
+import { MotiPressable } from 'moti/interactions';
 
 /**
  * Pill component size options.
  */
-type Size = "sm" | "md" | "lg";
+type Size = 'sm' | 'md' | 'lg';
 
 /**
  * Context value for pill button state.
@@ -37,7 +38,7 @@ const PillContext = createContext<PillProps | null>(null);
  */
 interface BaseProps
   extends PillProps,
-    Omit<AnimatedProps<ViewProps>, "className"> {
+    Omit<AnimatedProps<ViewProps>, 'className'> {
   className?: string;
   onChange?: (selected: boolean) => void;
   children?: React.ReactNode;
@@ -50,8 +51,8 @@ interface BaseProps
  * Main pill button component. Handles selection state and provides context to children.
  */
 function Base({
-  size = "md",
-  className = "",
+  size = 'md',
+  className = '',
   onChange,
   children,
   disabled = false,
@@ -68,33 +69,27 @@ function Base({
 
   // Compose className based on props and state
   const combinedClassName = clsx(
-    "flex flex-row justify-between gap-2 items-center rounded-full border border-primary transition-colors",
-    selectable && "active:opacity-80 active:scale-95",
+    'flex flex-row justify-between gap-2 items-center rounded-full border border-primary transition-colors',
+    selectable && 'active:opacity-80 active:scale-95',
     BaseStyle.size[size],
     className,
     selected ? BaseStyle.selected : BaseStyle.unselected,
-    disabled && "opacity-40",
+    disabled && 'opacity-40',
   );
 
   return (
     <PillContext.Provider value={{ size, selected }}>
-      <PressAnimation
+      <MotiPressable
         onPress={() => {
           handlePress();
           onChange?.(!selected);
         }}
+        animate={useMemo(() => animations.press, [])}
       >
-        {(animatedStyle) => (
-          <Animated.View
-            className={combinedClassName}
-            aria-disabled={disabled}
-            style={selectable && animatedStyle}
-            {...props}
-          >
-            {children}
-          </Animated.View>
-        )}
-      </PressAnimation>
+        <View className={combinedClassName} aria-disabled={disabled}>
+          {children}
+        </View>
+      </MotiPressable>
     </PillContext.Provider>
   );
 }
@@ -110,18 +105,18 @@ interface LabelProps extends GlobalProps, TextProps {
  * Pill.Label
  * Renders the pill label, styled according to context (size, selected).
  */
-function Label({ className = "", children, ...props }: LabelProps) {
+function Label({ className = '', children, ...props }: LabelProps) {
   const { size, selected } = use(PillContext)!;
 
   const combinedClassName = [
     LabelStyle.size[size!],
     selected ? LabelStyle.selected : LabelStyle.unselected,
     className,
-  ].join(" ");
+  ].join(' ');
 
   return (
     <Text className={combinedClassName} {...props}>
-      {children || "Button"}
+      {children || 'Button'}
     </Text>
   );
 }
@@ -144,7 +139,7 @@ function Icon({
   children: (props: IconChildrenProps) => React.ReactNode;
 }) {
   const { size, selected } = use(PillContext) ?? {
-    size: "md",
+    size: 'md',
     selected: false,
   };
   const { colors } = useThemeStore();
@@ -153,7 +148,7 @@ function Icon({
 
   const iconProps: IconChildrenProps = {
     fill: selected ? colors.background : colors.primary,
-    size: size === "sm" ? 12 : size === "md" ? 16 : 20,
+    size: size === 'sm' ? 12 : size === 'md' ? 16 : 20,
   };
 
   return <>{children(iconProps)}</>;

@@ -6,7 +6,7 @@
  * @property size - Size variants for element dimensions and padding.
  * @property radius - Border radius variants for rounded corners.
  */
-export const BaseStyle = {
+const Base = {
   /**
    * Color variants for background styling.
    * - primary: Primary background color.
@@ -17,6 +17,7 @@ export const BaseStyle = {
     primary: 'bg-primary',
     error: 'bg-error',
     success: 'bg-success',
+    none: 'bg-transparent',
   },
   /**
    * Size variants for element dimensions and padding.
@@ -54,7 +55,7 @@ export const BaseStyle = {
  * @property color - Color variants for text styling.
  * @property size - Size variants for text size.
  */
-export const LabelStyle = {
+const Label = {
   /**
    * Color variants for text styling.
    * - primary: Primary text color.
@@ -65,6 +66,7 @@ export const LabelStyle = {
     primary: 'text-background',
     error: 'text-errorText',
     success: 'text-successText',
+    none: 'text-foreground',
   },
   /**
    * Size variants for text size.
@@ -78,4 +80,9 @@ export const LabelStyle = {
     md: 'text-base',
     lg: 'text-lg',
   },
+};
+
+export const buttonStyle = {
+  Base,
+  Label,
 };
