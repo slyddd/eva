@@ -1,19 +1,19 @@
+import { useThemeStore } from '@ui/theme/theme.store';
+import { MotiView } from 'moti';
 import {
   MotiPressableInteractionProp,
   useMotiPressable,
 } from 'moti/interactions';
 import { useContext } from 'react';
-import { ButonContext, ButtonColor } from '../button.context';
-import { useThemeStore } from '@ui/theme/theme.store';
 import { PixelRatio } from 'react-native';
-import { MotiView } from 'moti';
+import { ButonContext, ButtonColor } from '../button.context';
 
 /**
  * ButtonIcon component for rendering icons within a button.
  * It uses Moti for animations and supports different sizes and colors.
  */
 interface IconProps {
-  children: (props: { fill?: string; size?: number }) => React.ReactNode;
+  children: (props: { fill: string; size: number }) => React.ReactNode;
   animate?: MotiPressableInteractionProp;
 }
 

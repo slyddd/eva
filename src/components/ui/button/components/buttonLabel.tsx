@@ -1,7 +1,7 @@
+import clsx from 'clsx';
+import { MotiText } from 'moti';
 import { ComponentProps, useContext } from 'react';
 import { ButonContext } from '../button.context';
-import { Text } from 'moti';
-import clsx from 'clsx';
 
 // This object gives the clases for the different label colors
 const labelColors = {
@@ -11,7 +11,7 @@ const labelColors = {
   success: 'text-successText',
 };
 
-export function ButtonLabel(props: ComponentProps<typeof Text>) {
+export function ButtonLabel(props: ComponentProps<typeof MotiText>) {
   const context = useContext(ButonContext);
 
   // Ensure the ButtonLabel is used like a child of ButtonBase
@@ -29,8 +29,8 @@ export function ButtonLabel(props: ComponentProps<typeof Text>) {
   );
 
   return (
-    <Text className={className} {...props}>
+    <MotiText className={className} {...props}>
       {props.children || 'Button Label'}
-    </Text>
+    </MotiText>
   );
 }

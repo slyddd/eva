@@ -1,6 +1,6 @@
-import { ActivityIndicator, PixelRatio } from 'react-native';
 import { useThemeStore } from '@ui/theme/theme.store';
 import { useContext } from 'react';
+import { ActivityIndicator, PixelRatio } from 'react-native';
 import { ButonContext, ButtonColor } from '../button.context';
 
 interface ButtonSpinnerProps {

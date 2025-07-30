@@ -1,8 +1,7 @@
-import { animations } from '@ui/animations';
 import { shadows } from '@ui/shadows';
 import { useThemeStore } from '@ui/theme/theme.store';
 import { MotiPressable, MotiPressableInteractionProp } from 'moti/interactions';
-import { ComponentProps, useCallback } from 'react';
+import { ComponentProps } from 'react';
 import { DimensionValue, PixelRatio } from 'react-native';
 import { ButonContext, ButtonContextProps } from '../button.context';
 
@@ -18,7 +17,7 @@ interface BaseProps
     ButtonContextProps {
   width?: DimensionValue;
   height?: DimensionValue;
-  radius?: 'sm' | 'md' | 'lg' | 'full';
+  radius?: 'sm' | 'md' | 'lg' | 'full' | 'none';
   hasShadow?: boolean;
   animate?: MotiPressableInteractionProp;
   hasAnimation?: boolean;
@@ -40,6 +39,7 @@ const baseRadius = {
   md: { borderRadius: 8 },
   lg: { borderRadius: 12 },
   full: { borderRadius: 9999 },
+  none: { borderRadius: 0 },
 };
 
 function pressAnimation({
@@ -97,7 +97,7 @@ export function ButtonBase({
   ];
 
   return (
-    <ButonContext.Provider value={{ size }}>
+    <ButonContext.Provider value={{ size, color }}>
       <MotiPressable animate={animate} disabled={disabled} {...props}>
         {props.children}
       </MotiPressable>
