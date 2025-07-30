@@ -4,7 +4,7 @@ import {
 } from 'moti/interactions';
 import { useContext } from 'react';
 import { ButonContext, ButtonColor } from '../button.context';
-import { useThemeStore } from '../../theme/theme.store';
+import { useThemeStore } from '@ui/theme/theme.store';
 import { PixelRatio } from 'react-native';
 import { MotiView } from 'moti';
 

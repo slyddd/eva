@@ -2,7 +2,7 @@ import { animations } from '@ui/animations';
 import { shadows } from '@ui/shadows';
 import { useThemeStore } from '@ui/theme/theme.store';
 import { MotiPressable, MotiPressableInteractionProp } from 'moti/interactions';
-import { ComponentProps } from 'react';
+import { ComponentProps, useCallback } from 'react';
 import { DimensionValue, PixelRatio } from 'react-native';
 import { ButonContext, ButtonContextProps } from '../button.context';
 
@@ -19,13 +19,12 @@ interface BaseProps
   width?: DimensionValue;
   height?: DimensionValue;
   radius?: 'sm' | 'md' | 'lg' | 'full';
-  disabled?: boolean;
   hasShadow?: boolean;
   animate?: MotiPressableInteractionProp;
   hasAnimation?: boolean;
 }
 
-/*
+/**
  * * This values are passed to PixelRatio.getPixelSizeForLayoutSize
  * * to get a pixel size based on the mobile layout size.
  */
@@ -43,16 +42,33 @@ const baseRadius = {
   full: { borderRadius: 9999 },
 };
 
+function pressAnimation({
+  hasAnimation,
+  disabled,
+}: {
+  hasAnimation?: boolean;
+  disabled?: boolean;
+}) {
+  return ({ hovered, pressed }: { hovered: boolean; pressed: boolean }) => {
+    'worklet';
+    const isPressed = pressed || hovered;
+    return {
+      opacity: disabled ? 0.5 : isPressed && hasAnimation ? 0.8 : 1,
+      scale: isPressed && hasAnimation ? 0.85 : 1,
+    };
+  };
+}
+
 export function ButtonBase({
   size = 'md',
   radius = 'md',
   color = 'primary',
   width = baseSizes[size].width,
   height = baseSizes[size].height,
-  disabled = false,
   hasShadow = true,
   hasAnimation = true,
-  animate = hasAnimation ? animations.press : undefined,
+  disabled = false,
+  animate = pressAnimation({ hasAnimation, disabled }),
   ...props
 }: BaseProps) {
   const { colors } = useThemeStore();
@@ -75,7 +91,6 @@ export function ButtonBase({
       justifyContent: 'center',
       flexDirection: 'row',
       gap: 8,
-      opacity: disabled ? 0.5 : 1,
     },
     hasShadow && shadows.normal,
     props.style,
@@ -83,7 +98,7 @@ export function ButtonBase({
 
   return (
     <ButonContext.Provider value={{ size }}>
-      <MotiPressable animate={animate} {...props}>
+      <MotiPressable animate={animate} disabled={disabled} {...props}>
         {props.children}
       </MotiPressable>
     </ButonContext.Provider>

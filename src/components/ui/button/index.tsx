@@ -13,3 +13,4 @@
 export { ButtonBase } from './components/buttonBase';
 export { ButtonLabel } from './components/buttonLabel';
 export { ButtonIcon } from './components/buttonIcon';
+export { ButtonSpinner } from './components/buttonSpinner';
