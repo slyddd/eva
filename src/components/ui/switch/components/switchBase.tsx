@@ -5,6 +5,7 @@ import { ComponentProps, useState } from 'react';
 import { PixelRatio, Text, View } from 'react-native';
 import { SwitchContext } from '../switch.context';
 import { SwitchPill } from './switchPill';
+import { shadows } from '@ui/shadows';
 
 /**
  * /**
@@ -88,6 +89,7 @@ export function SwitchBase({
             display: 'flex',
             flexDirection: 'row',
             gap: 6,
+            ...shadows.normal,
           }}
           animate={({ hovered, pressed }) => {
             'worklet';
