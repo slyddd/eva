@@ -119,7 +119,7 @@ const ReactNiceAvatar: FC<NiceAvatarProps> = (props) => {
   );
 };
 
-export default ReactNiceAvatar;
+export const Avatar = ReactNiceAvatar;
 
 export { genConfig } from './utils';
 export * from './types';
