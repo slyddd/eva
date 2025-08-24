@@ -1,5 +1,5 @@
-import { Button } from '@ui/button';
-import { Icon } from '@/ui/icon';
+import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
+import { Icon } from '@ui/icon';
 import { useThemeStore } from '@ui/theme/theme.store';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -40,16 +40,16 @@ export default function Register() {
           de la salud, debido a que el adulto mayor puede lastimarse si no se
           realizan los ejercicios adecuadamente
         </Text>
-        <Button.Base
+        <ButtonBase
           color="error"
           size="lg"
           onPress={() => BackHandler.exitApp()}
         >
-          <Button.Icon>
+          <ButtonIcon>
             {({ fill, size }) => <Icon.Error fill={fill} size={size} />}
-          </Button.Icon>
-          <Button.Label center>Cerrar App</Button.Label>
-        </Button.Base>
+          </ButtonIcon>
+          <ButtonLabel>Cerrar App</ButtonLabel>
+        </ButtonBase>
       </View>
       <View className="w-full flex-1 flex-col items-center justify-center">
         <Image

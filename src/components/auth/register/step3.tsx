@@ -1,17 +1,15 @@
-import { Button } from '@ui/button';
+import { animations } from '@ui/animations';
+import { Avatar, genConfig } from '@ui/avatar';
+import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
+import { InputBase, InputField } from '@ui/input';
+import { SwitchBase, SwitchIcon } from '@ui/switch';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { PixelRatio, Text, View } from 'react-native';
 import { StepType } from './step.type';
-import { useForm } from 'react-hook-form';
-import { Input } from '@ui/input/input';
-import Avatar, { genConfig } from '@ui/avatar';
-import { useState } from 'react';
-import { Switch } from '@ui/switch';
-import { animations } from '@ui/animations';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function RegisterStep3({ nextHandler }: StepType) {
-  const insets = useSafeAreaInsets();
   const { control } = useForm();
   const [sex, setSex] = useState<'man' | 'woman'>('man');
   const [avatar, setAvatar] = useState(
@@ -44,49 +42,37 @@ export function RegisterStep3({ nextHandler }: StepType) {
   };
 
   return (
-    <View
-      className="w-full flex-1 items-center justify-center"
-      style={{
-        paddingBottom: insets.bottom + 20,
-        paddingTop: insets.top,
-      }}
-    >
+    <View className="w-full flex-1 items-center justify-center pb-5">
       <View className="flex w-3/4 flex-1 flex-col items-center justify-center gap-6">
         <Text className="text-center text-lg text-foreground">
           ¿Como quieres que te llamemos?
         </Text>
-        <Input.Base size="sm">
-          <Input.TextField
-            name="username"
-            control={control}
-            placeholder="Nombre de Usuario"
-          />
-        </Input.Base>
+        <InputBase
+          label="Nombre de usuario"
+          size="sm"
+          control={control}
+          name="username"
+        >
+          <InputField />
+        </InputBase>
         <Text className="text-center text-lg text-foreground">
           Escoje tu genero
         </Text>
         <View className="flex flex-row items-center justify-center gap-2">
-          <Text
-            className={`text-sm ${sex === 'man' ? 'text-primary' : 'text-foreground'}`}
+          <SwitchBase
+            label={['Masculino', 'Femenino']}
+            onPress={handleSexToggle}
           >
-            Masculino
-          </Text>
-          <Switch.Base onPress={handleSexToggle}>
-            <Switch.Icon>
-              {({ fill, size }) =>
-                sex === 'woman' ? (
+            <SwitchIcon>
+              {({ fill, size, state }) =>
+                state ? (
                   <Icon.Female fill={fill} size={size} />
                 ) : (
                   <Icon.Male fill={fill} size={size} />
                 )
               }
-            </Switch.Icon>
-          </Switch.Base>
-          <Text
-            className={`text-sm ${sex === 'woman' ? 'text-primary' : 'text-foreground'}`}
-          >
-            Femenino
-          </Text>
+            </SwitchIcon>
+          </SwitchBase>
         </View>
         <Text className="text-center text-lg text-foreground">
           Escoje tu avatar
@@ -94,20 +80,20 @@ export function RegisterStep3({ nextHandler }: StepType) {
         <View className="flex w-fit items-center justify-center">
           <Avatar size={PixelRatio.getPixelSizeForLayoutSize(60)} {...avatar} />
           <View className="-mt-10 ml-auto flex flex-row items-center justify-end gap-4">
-            <Button.Base size="sm" onPress={handleAvatarRefresh}>
-              <Button.Icon animation={animations.reload}>
+            <ButtonBase width="auto" size="sm" onPress={handleAvatarRefresh}>
+              <ButtonIcon animate={animations.reload}>
                 {({ fill, size }) => <Icon.Refresh fill={fill} size={size} />}
-              </Button.Icon>
-            </Button.Base>
+              </ButtonIcon>
+            </ButtonBase>
           </View>
         </View>
       </View>
-      <Button.Base onPress={nextHandler}>
-        <Button.Label>Siguiente</Button.Label>
-        <Button.Icon>
+      <ButtonBase onPress={nextHandler}>
+        <ButtonLabel>Siguiente</ButtonLabel>
+        <ButtonIcon>
           {({ fill, size }) => <Icon.Right fill={fill} size={size} />}
-        </Button.Icon>
-      </Button.Base>
+        </ButtonIcon>
+      </ButtonBase>
     </View>
   );
 }

@@ -1,16 +1,16 @@
 import '@/global.css';
+import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace('/introduction');
+      router.replace('/(dashboard)');
     }, 2000);
-
     return () => clearTimeout(timer);
   });
 
@@ -22,6 +22,10 @@ export default function Index() {
           alt="logo-eva"
           source={require('../../assets/images/icon.png')}
           className="h-48 w-48 rounded-xl"
+          contentFit="cover"
+          placeholder={{
+            blurhash: 'L5H?@-?b00%M~qj[ayj[ayj[ayj[',
+          }}
         />
       </View>
     </View>

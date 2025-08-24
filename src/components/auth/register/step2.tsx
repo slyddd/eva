@@ -1,5 +1,5 @@
-import { Button } from '@ui/button';
-import { Icon } from '@/ui/icon';
+import { ButtonBase, ButtonIcon } from '@ui/button';
+import { Icon } from '@ui/icon';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { PixelRatio, Text, View } from 'react-native';
@@ -17,19 +17,19 @@ export function RegisterStep2({ nextHandler }: StepType) {
           la misma?
         </Text>
         <View className="flex w-full flex-row items-center justify-between gap-4">
-          <Button.Base
+          <ButtonBase
             color="error"
             onPress={() => router.push('/register/error')}
           >
-            <Button.Icon>
+            <ButtonIcon>
               {({ fill, size }) => <Icon.Error fill={fill} size={size} />}
-            </Button.Icon>
-          </Button.Base>
-          <Button.Base color="success" onPress={nextHandler}>
-            <Button.Icon>
+            </ButtonIcon>
+          </ButtonBase>
+          <ButtonBase color="success" onPress={nextHandler}>
+            <ButtonIcon>
               {({ fill, size }) => <Icon.Success fill={fill} size={size} />}
-            </Button.Icon>
-          </Button.Base>
+            </ButtonIcon>
+          </ButtonBase>
         </View>
       </View>
       <View className="w-full flex-1 flex-col items-center justify-center gap-5">

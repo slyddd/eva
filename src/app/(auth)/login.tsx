@@ -1,6 +1,6 @@
-import { Button } from '@ui/button';
-import { Icon } from '@/ui/icon';
-import { Input } from '@ui/input/input';
+import { ButtonBase, ButtonLabel } from '@ui/button';
+import { Icon } from '@ui/icon';
+import { ElevateOnKeyboard, InputBase, InputField, InputIcon } from '@ui/input';
 import { useThemeStore } from '@ui/theme/theme.store';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,7 +17,7 @@ export default function Login() {
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   return (
-    <Input.ElevateOnKeyboard>
+    <ElevateOnKeyboard>
       <View className="flex flex-1 items-center justify-end">
         <Image
           source="https://placehold.co/400"
@@ -34,7 +34,7 @@ export default function Login() {
         />
         <LinearGradient
           colors={gradients?.surface ?? ['#000', '#000']}
-          className="-mt-32 flex h-3/4 w-full flex-col items-center justify-evenly gap-4 rounded-t-el-lg bg-surface"
+          className="rounded-t-el-lg -mt-32 flex h-3/4 w-full flex-col items-center justify-evenly gap-4 bg-surface"
           style={{
             borderTopLeftRadius: PixelRatio.getPixelSizeForLayoutSize(28),
             borderTopRightRadius: PixelRatio.getPixelSizeForLayoutSize(28),
@@ -44,27 +44,18 @@ export default function Login() {
             Bienvenido de Vuelta
           </Text>
           <View className="flex w-3/4 flex-col items-center justify-center gap-4">
-            <Input.Base>
-              <Input.Icon>
+            <InputBase label="Correo" control={control} name="mail">
+              <InputIcon>
                 {({ fill, size }) => <Icon.Mail fill={fill} size={size} />}
-              </Input.Icon>
-              <Input.TextField
-                name="mail"
-                placeholder="Correo Electrónico"
-                control={control}
-              />
-            </Input.Base>
-            <Input.Base>
-              <Input.Icon>
+              </InputIcon>
+              <InputField />
+            </InputBase>
+            <InputBase label="Contraseña" control={control} name="password">
+              <InputIcon>
                 {({ fill, size }) => <Icon.Key fill={fill} size={size} />}
-              </Input.Icon>
-              <Input.TextField
-                name="password"
-                placeholder="Contraseña"
-                control={control}
-                secureTextEntry={!viewPassword}
-              />
-              <Input.Icon onPress={() => setViewPassword(!viewPassword)}>
+              </InputIcon>
+              <InputField secureTextEntry={!viewPassword} />
+              <InputIcon onPress={() => setViewPassword(!viewPassword)}>
                 {({ fill, size }) =>
                   viewPassword ? (
                     <Icon.EyeOff fill={fill} size={size} />
@@ -72,14 +63,14 @@ export default function Login() {
                     <Icon.Eye fill={fill} size={size} />
                   )
                 }
-              </Input.Icon>
-            </Input.Base>
+              </InputIcon>
+            </InputBase>
           </View>
-          <Button.Base width={100}>
-            <Button.Label center>Iniciar</Button.Label>
-          </Button.Base>
+          <ButtonBase width={100}>
+            <ButtonLabel>Iniciar</ButtonLabel>
+          </ButtonBase>
         </LinearGradient>
       </View>
-    </Input.ElevateOnKeyboard>
+    </ElevateOnKeyboard>
   );
 }

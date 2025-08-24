@@ -1,4 +1,4 @@
-import { Button } from '@ui/button';
+import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { shadows } from '@ui/shadows';
 import { Href, useRouter } from 'expo-router';
@@ -10,27 +10,23 @@ import {
   TabTriggerSlotProps,
 } from 'expo-router/ui';
 import { forwardRef, PropsWithChildren, ReactNode } from 'react';
-import { PixelRatio, SafeAreaView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PixelRatio, View } from 'react-native';
 
 export default function TabsLayout() {
-  const insets = useSafeAreaInsets();
   return (
-    <View
-      className="flex-1"
-      style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}
-    >
+    <View className="flex-1">
       <Tabs>
         <TabSlot />
         <TabList
           style={{
-            borderRadius: PixelRatio.getPixelSizeForLayoutSize(5),
-            padding: PixelRatio.getPixelSizeForLayoutSize(5),
+            borderRadius: 17,
+            padding: 15,
+            paddingVertical: 10,
             ...shadows.normal,
           }}
           className="mx-5 mb-5 bg-surface"
         >
-          <TabTrigger name="home" href="/dashboard" asChild>
+          <TabTrigger name="home" href="/" asChild>
             <CustomTabButton icon={(props) => <Icon.Home {...props} />}>
               Inicio
             </CustomTabButton>
@@ -59,23 +55,17 @@ export const CustomTabButton = forwardRef<View, CustomTabButtonProps>(
   (props, ref) => {
     const router = useRouter();
     return (
-      <Button.Base
+      <ButtonBase
         ref={ref}
-        shadow={false}
+        hasShadow={false}
         color={props.isFocused ? 'primary' : 'none'}
-        radius="none"
         size="sm"
         onPress={() => {
           if (props.href) {
             router.push(props.href as Href);
           }
         }}
-        style={{
-          borderRadius: PixelRatio.getPixelSizeForLayoutSize(6),
-          overflow: 'hidden',
-          transitionProperty: 'transform, opacity',
-        }}
-        animation={({ hovered, pressed }) => {
+        animate={({ hovered, pressed }) => {
           'worklet';
           return {
             opacity: hovered || pressed ? 0.8 : 1,
@@ -84,9 +74,9 @@ export const CustomTabButton = forwardRef<View, CustomTabButtonProps>(
           };
         }}
       >
-        <Button.Icon>{props.icon}</Button.Icon>
-        {props.isFocused && <Button.Label>{props.children}</Button.Label>}
-      </Button.Base>
+        <ButtonIcon>{props.icon}</ButtonIcon>
+        {props.isFocused && <ButtonLabel>{props.children}</ButtonLabel>}
+      </ButtonBase>
     );
   },
 );

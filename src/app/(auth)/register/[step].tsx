@@ -2,13 +2,13 @@ import { RegisterStep4 } from '@components/auth/register/step4';
 import { RegisterStep1 } from '@components/auth/register/step1';
 import { RegisterStep2 } from '@components/auth/register/step2';
 import { RegisterStep3 } from '@components/auth/register/step3';
-import { Button } from '@ui/button';
-import { useThemeStore } from '@ui/theme/theme.store';
+import { useThemeStore } from '@/components/ui/theme/theme.store';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useEffect, useMemo } from 'react';
 import { ColorValue, PixelRatio, Text, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { ButtonBase, ButtonLabel } from '@ui/button';
 
 const steps = [RegisterStep1, RegisterStep2, RegisterStep3, RegisterStep4];
 
@@ -50,7 +50,7 @@ export default function Register() {
     if (currentStep < maxSteps) {
       router.push(`/register/${currentStep + 1}`);
     } else {
-      router.push('/dashboard');
+      router.push('/(dashboard)');
     }
   };
 
@@ -60,9 +60,9 @@ export default function Register() {
         <Text className="text-center text-5xl text-foreground">
           Parece que no hay un paso {step} definido.
         </Text>
-        <Button.Base color="error" onPress={router.dismiss}>
-          <Button.Label center>Volver</Button.Label>
-        </Button.Base>
+        <ButtonBase color="error" onPress={router.dismiss}>
+          <ButtonLabel>Volver</ButtonLabel>
+        </ButtonBase>
       </View>
     );
   }

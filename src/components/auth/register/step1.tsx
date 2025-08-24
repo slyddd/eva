@@ -1,5 +1,5 @@
-import { Button } from '@ui/button';
-import { Icon } from '@/ui/icon';
+import { ButtonBase, ButtonIcon } from '@ui/button';
+import { Icon } from '@ui/icon';
 import { Image } from 'expo-image';
 import { PixelRatio, Text, View } from 'react-native';
 import { StepType } from './step.type';
@@ -13,11 +13,11 @@ export function RegisterStep1({ nextHandler }: StepType) {
         <Text className="text-2xl text-foreground">
           Nos gustaria saber mas de ti, para poder registrarte en la aplicación.
         </Text>
-        <Button.Base className="" onPress={nextHandler}>
-          <Button.Icon>
+        <ButtonBase onPress={nextHandler}>
+          <ButtonIcon>
             {({ fill, size }) => <Icon.Right fill={fill} size={size} />}
-          </Button.Icon>
-        </Button.Base>
+          </ButtonIcon>
+        </ButtonBase>
       </View>
       <View className="w-full flex-1 flex-col items-end justify-end">
         <Image

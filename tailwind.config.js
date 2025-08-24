@@ -7,9 +7,9 @@ module.exports = {
   theme: {
     extend: {
       borderRadius: {
-        'el-sm': '0.4rem',
-        'el-md': '0.8rem',
-        'el-lg': '2rem',
+        sm: 4,
+        md: 8,
+        lg: 12,
       },
       colors: {
         background: 'rgb(var(--background) / <alpha-value>)',
@@ -36,6 +36,9 @@ module.exports = {
       '6xl': fontScale(36),
       '7xl': fontScale(40),
       '8xl': fontScale(44),
+    },
+    boxShadow: {
+      default: '0px 3px 10px 1px rgba(0, 0, 0, 0.2)',
     },
   },
   plugins: [
