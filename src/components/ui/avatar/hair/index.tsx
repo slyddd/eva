@@ -5,7 +5,7 @@ import Thick from './thick';
 import Mohawk from './mohawk';
 import WomanLong from './womanLong';
 import WomanShort from './womanShort';
-import type { HairStyleType } from 'src/types';
+import { HairStyleType } from '../types';
 
 export default function hair(props: {
   style: HairStyleType;

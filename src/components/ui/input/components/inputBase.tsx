@@ -102,7 +102,7 @@ export function InputBase({
       value={{ size, disabled: props.disabled, ...controller }}
     >
       <View
-        className="flex h-fit flex-col items-center justify-center gap-2"
+        className="flex h-fit flex-col justify-center gap-2"
         style={{ width }}
       >
         {props.label && <Text className={labelStyles}>{props.label}</Text>}

@@ -26,7 +26,7 @@ interface CardInfoProps extends Omit<TextProps, 'children'> {
   children: ((props: { size: number; fill: string }) => ReactNode) | string;
 }
 
-export function CardInfo({ children, ...props }: CardInfoProps) {
+export function CardInfo({ children, className, ...props }: CardInfoProps) {
   const context = useContext(CardContext);
 
   const { color } = context || {
@@ -41,7 +41,10 @@ export function CardInfo({ children, ...props }: CardInfoProps) {
       {children({ size, fill })}
     </View>
   ) : (
-    <Text className={clsx('text-sm opacity-60', textColors[color])} {...props}>
+    <Text
+      className={clsx('text-sm opacity-60', textColors[color], className)}
+      {...props}
+    >
       {children}
     </Text>
   );

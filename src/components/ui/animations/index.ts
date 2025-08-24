@@ -1,14 +1,5 @@
 import { MotiPressableInteractionProp } from 'moti/interactions';
 
-const press: MotiPressableInteractionProp = ({ hovered, pressed }) => {
-  'worklet';
-
-  return {
-    opacity: hovered || pressed ? 0.8 : 1,
-    scale: hovered || pressed ? 0.85 : 1,
-  };
-};
-
 const reload: MotiPressableInteractionProp = ({ hovered, pressed }) => {
   'worklet';
   return {
@@ -17,6 +8,5 @@ const reload: MotiPressableInteractionProp = ({ hovered, pressed }) => {
 };
 
 export const animations = {
-  press,
   reload,
 };

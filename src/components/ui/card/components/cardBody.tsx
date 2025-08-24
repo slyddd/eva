@@ -1,14 +1,7 @@
 import { CardContext, Colors } from '@ui/card/card.context';
 import { useThemeStore } from '@ui/theme/theme.store';
-import clsx from 'clsx';
 import { ReactNode, useContext } from 'react';
-import { PixelRatio, Text, TextProps, View, ViewProps } from 'react-native';
-
-const textColors = {
-  surface: 'text-foreground',
-  error: 'text-errorText',
-  success: 'text-successText',
-};
+import { PixelRatio, View, ViewProps } from 'react-native';
 
 function getInfoColor(color: Colors) {
   const { colors } = useThemeStore();

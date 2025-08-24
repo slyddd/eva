@@ -12,3 +12,4 @@
 export { InputBase } from './components/inputBase';
 export { InputField } from './components/inputField';
 export { InputIcon } from './components/inputIcon';
+export { ElevateOnKeyboard } from './components/elevateKeyboard';

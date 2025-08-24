@@ -5,7 +5,11 @@ import { useThemeStore } from '@ui/theme/theme.store';
 
 // interface for the SwitchIcon component props
 interface SwitchIconProps {
-  children: (props: { fill: string; size: number }) => React.ReactNode;
+  children: (props: {
+    fill: string;
+    size: number;
+    state: boolean;
+  }) => React.ReactNode;
 }
 
 // This values will be passed to PixelRatio, so can change depending on the personal
@@ -31,5 +35,5 @@ export function SwitchIcon(props: SwitchIconProps) {
   const iconSize = PixelRatio.getFontScale() * (iconSizes[size] || 16);
   const fill = selected ? colors.primary : colors.background;
 
-  return <>{props.children({ fill, size: iconSize })}</>;
+  return <>{props.children({ fill, size: iconSize, state: selected })}</>;
 }

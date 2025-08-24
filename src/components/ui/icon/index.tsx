@@ -15,6 +15,14 @@ import { MaleIcon } from './icons/male';
 import { ChartIcon } from './icons/bar-chart';
 import { HomeIcon } from './icons/home';
 import { SettingsIcon } from './icons/settings';
+import { SearchIcon } from './icons/search';
+import { SlidersIcon } from './icons/sliders';
+import { DownloadIcon } from './icons/download';
+import { PencilIcon } from './icons/pencil';
+import { DumbbellIcon } from './icons/dumbell';
+import { ImageIcon } from './icons/image';
+import { PauseIcon } from './icons/pause';
+import { PlayIcon } from './icons/play';
 
 function IconBase({
   fill = '#000',
@@ -64,4 +72,12 @@ export const Icon = {
   Stats: createIcon(ChartIcon),
   Home: createIcon(HomeIcon),
   Settings: createIcon(SettingsIcon),
+  Search: createIcon(SearchIcon),
+  Filter: createIcon(SlidersIcon),
+  Download: createIcon(DownloadIcon),
+  Edit: createIcon(PencilIcon),
+  Exercise: createIcon(DumbbellIcon),
+  Image: createIcon(ImageIcon),
+  Pause: createIcon(PauseIcon),
+  Play: createIcon(PlayIcon),
 };

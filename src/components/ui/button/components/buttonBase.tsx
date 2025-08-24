@@ -35,11 +35,11 @@ const baseSizes = {
 
 // Base border radius values for the button component
 const baseRadius = {
-  sm: { borderRadius: 4 },
-  md: { borderRadius: 8 },
-  lg: { borderRadius: 12 },
-  full: { borderRadius: 9999 },
-  none: { borderRadius: 0 },
+  sm: 4,
+  md: 8,
+  lg: 12,
+  full: 9999,
+  none: 0,
 };
 
 function pressAnimation({
@@ -84,7 +84,7 @@ export function ButtonBase({
     {
       backgroundColor: color === 'none' ? 'transparent' : colors[color],
       padding: 8,
-      borderRadius: baseRadius[radius].borderRadius,
+      borderRadius: baseRadius[radius],
       width,
       height,
       alignItems: 'center',

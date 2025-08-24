@@ -10,6 +10,7 @@ interface CardBaseProps extends ComponentProps<typeof MotiPressable> {
   radius?: 'sm' | 'md' | 'lg' | 'full' | 'none';
   orientation?: 'horizontal' | 'vertical';
   width?: DimensionValue;
+  hasShadow?: boolean;
 }
 
 const cardRadius = {
@@ -25,6 +26,8 @@ export function CardBase({
   radius = 'md',
   orientation = 'horizontal',
   width = 100,
+  hasShadow = true,
+  style,
   ...props
 }: CardBaseProps) {
   const { colors } = useThemeStore();
@@ -36,14 +39,19 @@ export function CardBase({
   return (
     <CardContext.Provider value={{ radius, color }}>
       <MotiPressable
-        style={{
-          backgroundColor: colors[color],
-          padding: 6,
-          borderRadius: cardRadius[radius],
-          flexDirection: orientation === 'horizontal' ? 'row' : 'column',
-          width,
-          ...shadows.normal,
-        }}
+        style={[
+          {
+            backgroundColor: colors[color],
+            padding: 6,
+            borderRadius: cardRadius[radius],
+            flexDirection: orientation === 'horizontal' ? 'row' : 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width,
+          },
+          style,
+          hasShadow && shadows.normal,
+        ]}
         animate={({ pressed, hovered }) => {
           'worklet';
           const isPressed = pressed || hovered;

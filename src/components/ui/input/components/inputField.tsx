@@ -34,7 +34,9 @@ export function InputField(props: TextInputProps) {
   const textStyle = clsx(
     'flex-1',
     textSizes[size],
-    fieldState.error ? 'text-errorText' : 'text-background',
+    fieldState.error
+      ? 'text-errorText placeholder:text-errorText'
+      : 'text-background placeholder:text-background',
   );
 
   return (
