@@ -1,26 +1,51 @@
-import { useRef } from 'react';
-import { StopwatchTimerMethods } from 'react-native-animated-stopwatch-timer';
+import { useEffect, useRef, useState } from 'react';
 
-export function useTimer() {
-  const timerRef = useRef<StopwatchTimerMethods>(null);
+export function useTimer({ startTime }: { startTime: number }) {
+  const [time, setTime] = useState(startTime);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | number | null>(null);
 
-  // Methods to control the timer
-  function play() {
-    timerRef.current?.play();
-  }
+  const play = () => {
+    if (isPlaying) return;
+    setIsPlaying(true);
+    intervalRef.current = setInterval(() => {
+      setTime((prev) =>
+        startTime === 0 ? prev + 1000 : Math.max(prev - 1000, 0),
+      );
+    }, 1000);
+  };
 
-  function pause() {
-    timerRef.current?.pause();
-  }
+  const pause = () => {
+    if (!isPlaying) return;
+    setIsPlaying(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
 
-  function reset() {
-    timerRef.current?.reset();
-  }
+  const reset = () => {
+    setTime(startTime);
+    setIsPlaying(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
 
   return {
-    timerRef,
+    time,
     play,
     pause,
     reset,
+    isPlaying,
   };
 }

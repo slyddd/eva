@@ -5,7 +5,7 @@ import { PixelRatio, Text, View } from 'react-native';
 import { StepType } from './step.type';
 
 export function RegisterStep1({ nextHandler }: StepType) {
-  const blurhash = 'L5H?@-?b00%M~qj[ayj[ayj[ayj['; // Example blurhash, replace with your own
+  const blurhash = 'L5H?@-?b00%M~qj[ayj[ayj[ayj['; // TODO: Replace with actual blurhash
 
   return (
     <View className="w-full flex-1 items-center justify-center">

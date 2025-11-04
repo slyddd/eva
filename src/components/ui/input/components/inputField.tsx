@@ -47,8 +47,8 @@ export function InputField(props: TextInputProps) {
       }}
       onChangeText={field.onChange}
       readOnly={disabled || props.readOnly}
-      {...props}
       {...field}
+      {...props}
     />
   );
 }

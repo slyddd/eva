@@ -21,6 +21,7 @@ interface InputBaseProps extends ComponentProps<typeof MotiView> {
   width?: DimensionValue;
   height?: DimensionValue;
   disabled?: boolean;
+  defaultValue?: string;
 }
 
 /**
@@ -70,7 +71,7 @@ export function InputBase({
   const controller = useController({
     control: props.control,
     name: props.name,
-    defaultValue: '',
+    defaultValue: props.defaultValue || '',
   });
   const { colors } = useThemeStore();
   const { fieldState } = controller;

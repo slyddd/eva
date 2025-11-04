@@ -23,6 +23,9 @@ import { DumbbellIcon } from './icons/dumbell';
 import { ImageIcon } from './icons/image';
 import { PauseIcon } from './icons/pause';
 import { PlayIcon } from './icons/play';
+import { StopIcon } from './icons/stop';
+import { PlusIcon } from './icons/plus';
+import { MinusIcon } from './icons/minus';
 
 function IconBase({
   fill = '#000',
@@ -49,11 +52,13 @@ function IconBase({
 }
 
 function createIcon(Component: React.ComponentType) {
-  return (props: IconProps) => (
+  const IconComponent = (props: IconProps) => (
     <IconBase {...props}>
       <Component />
     </IconBase>
   );
+  IconComponent.displayName = `Icon(${Component.displayName || Component.name || 'Component'})`;
+  return IconComponent;
 }
 
 export const Icon = {
@@ -80,4 +85,7 @@ export const Icon = {
   Image: createIcon(ImageIcon),
   Pause: createIcon(PauseIcon),
   Play: createIcon(PlayIcon),
+  Stop: createIcon(StopIcon),
+  Plus: createIcon(PlusIcon),
+  Minus: createIcon(MinusIcon),
 };
