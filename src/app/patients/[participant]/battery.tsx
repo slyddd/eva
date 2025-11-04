@@ -1,3 +1,4 @@
+import { batteries } from '@data/batteries';
 import {
   CardBase,
   CardContent,
@@ -19,16 +20,16 @@ export default function Batteries() {
       </Text>
       <ScrollView contentContainerClassName="py-10">
         <View className="flex-1 items-center gap-5">
-          {[...Array(5)].map((_, index) => (
+          {batteries.map((batt, index) => (
             <CardBase
               width={150}
-              onPress={() => router.push(`/patients/${participant}/${index}`)}
+              onPress={() => router.push(`/patients/${participant}/${batt.id}`)}
               key={index}
             >
               <CardContent>
                 <CardHeader>
-                  <CardTitle>Batería {index + 1}</CardTitle>
-                  <CardInfo>Aprox 10 minutos</CardInfo>
+                  <CardTitle>{batt.name}</CardTitle>
+                  <CardInfo>{`Aprox ${batt.duration} minutos`}</CardInfo>
                 </CardHeader>
               </CardContent>
             </CardBase>

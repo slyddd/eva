@@ -9,10 +9,6 @@ export default function PatientLayout() {
   const { colors } = useThemeStore();
   const avatarConfig = useAvatarBySex('m');
 
-  const data = {
-    name: 'Paciente 1',
-  };
-
   return (
     <Stack
       screenOptions={{
@@ -26,7 +22,7 @@ export default function PatientLayout() {
             {...avatarConfig}
           />
         ),
-        headerTitle: data.name,
+        headerTitle: participant as string,
         contentStyle: {
           backgroundColor: 'transparent',
         },
@@ -57,6 +53,14 @@ export default function PatientLayout() {
         name="[battery]/index"
         options={{
           headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="[battery]/results"
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerLeft: () => <></>,
         }}
       />
     </Stack>

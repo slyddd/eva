@@ -1,31 +1,42 @@
+import { batteries } from '@data/batteries';
 import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
-import { Timer, useTimer } from '@ui/timer';
-import { SwitchBase, SwitchIcon } from '@ui/switch';
-import { Image } from 'expo-image';
-import { useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
-import { Text, View } from 'react-native';
-import StopwatchTimer from 'react-native-animated-stopwatch-timer';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ElevateOnKeyboard, InputBase, InputField, InputIcon } from '@ui/input';
+import { SwitchBase, SwitchIcon } from '@ui/switch';
+import { Timer } from '@ui/timer';
+import { Image } from 'expo-image';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Text, View } from 'react-native';
 
 export default function Exercise() {
   const { battery, participant, exercise } = useLocalSearchParams();
-  const { timerRef, play } = useTimer();
-  const { control } = useForm();
+  const { control, setValue, getValues } = useForm();
   const [showInfo, setShowInfo] = useState(false);
+  const router = useRouter();
+  const batt = batteries.find((b) => b.id === battery);
 
-  const data = {
-    name: 'exercise' + exercise,
-    description: `This is a description for exercise ${exercise} of battery ${battery} for
-participant ${participant}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    materials: ['silla', 'mesa'],
-    timer: 60000,
-    img: 'https://placehold.co/600x600',
-    units: 'rep',
-  };
+  if (!batt) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-2xl text-foreground">Batería no encontrada</Text>
+      </View>
+    );
+  }
+
+  const data = batt.excercises.find((e) => e.id === exercise);
+  const currentIndex = batt.excercises.findIndex((e) => e.id === exercise);
+
+  if (!data) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-2xl text-foreground">
+          Ejercicio no encontrado
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <ElevateOnKeyboard>
@@ -63,12 +74,40 @@ participant ${participant}. Lorem ipsum dolor sit amet, consectetur adipiscing e
               </SwitchIcon>
             </SwitchBase>
           </View>
-          <View className="w-full items-center justify-center">
-            <Timer time={data.timer} />
-          </View>
-          <View className="w-2/3 items-center justify-center">
-            <InputBase control={control} name="result">
-              <InputField />
+          {typeof data.timer === 'number' && (
+            <View className="w-full items-center justify-center">
+              <Timer time={data.timer}>
+                {({ time, isPlaying }) => {
+                  if (isPlaying || time === 0) {
+                    return;
+                  }
+
+                  if (data.timer === 0) {
+                    setValue('result', `${time / 1000}`, {
+                      shouldValidate: true,
+                    });
+                  }
+                }}
+              </Timer>
+            </View>
+          )}
+          <View className="w-2/3 flex-row items-center justify-center gap-2">
+            {typeof data.timer === 'number' && data.timer !== 0 && (
+              <ButtonBase
+                width="auto"
+                onPress={() =>
+                  setValue(
+                    'result',
+                    `${Math.max(0, Number(getValues('result') || 0) - 1)}`,
+                    {},
+                  )
+                }
+              >
+                <ButtonIcon>{(props) => <Icon.Minus {...props} />}</ButtonIcon>
+              </ButtonBase>
+            )}
+            <InputBase control={control} name="result" defaultValue="0">
+              <InputField readOnly={data.timer === 0} keyboardType="numeric" />
               <InputIcon>
                 {({ fill, size }) => (
                   <Text style={{ color: fill, fontSize: size }}>
@@ -77,16 +116,48 @@ participant ${participant}. Lorem ipsum dolor sit amet, consectetur adipiscing e
                 )}
               </InputIcon>
             </InputBase>
+            {typeof data.timer === 'number' && data.timer !== 0 && (
+              <ButtonBase
+                width="auto"
+                onPress={() =>
+                  setValue(
+                    'result',
+                    `${Number(getValues('result') || 0) + 1}`,
+                    {},
+                  )
+                }
+              >
+                <ButtonIcon>{(props) => <Icon.Plus {...props} />}</ButtonIcon>
+              </ButtonBase>
+            )}
           </View>
           <View className="mt-auto w-full flex-row items-center justify-between gap-5 px-5 py-4">
-            {/*{exercise !== '0' && (*/}
-            <ButtonBase width="auto">
+            <ButtonBase
+              width="auto"
+              onPress={() => {
+                router.back();
+              }}
+            >
               <ButtonIcon>{(props) => <Icon.Left {...props} />}</ButtonIcon>
               <ButtonLabel>Regresar</ButtonLabel>
             </ButtonBase>
-            {/*)}*/}
-            <ButtonBase width="auto">
-              <ButtonLabel>Continuar</ButtonLabel>
+            <ButtonBase
+              width="auto"
+              onPress={() => {
+                router.push(
+                  `/patients/${participant}/${battery}/${
+                    currentIndex + 1 < batt.excercises.length
+                      ? batt.excercises[currentIndex + 1].id
+                      : 'results'
+                  }`,
+                );
+              }}
+            >
+              <ButtonLabel>
+                {currentIndex + 1 < batt.excercises.length
+                  ? 'Continuar'
+                  : 'Resultados'}
+              </ButtonLabel>
               <ButtonIcon>{(props) => <Icon.Right {...props} />}</ButtonIcon>
             </ButtonBase>
           </View>
