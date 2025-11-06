@@ -6,12 +6,24 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PixelRatio, Text, View } from 'react-native';
 import { StepType } from './step.type';
+import { useRegisterStore } from '../stores/register.store';
 
 export function RegisterStep4({ nextHandler }: StepType) {
   const blurhash = 'L5H?@-?b00%M~qj[ayj[ayj[ayj['; //TODO: Replace with img blur hash
-  const { control } = useForm();
+  const { control, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { setPassword } = useRegisterStore();
+
+  const onSubmit = (data: any) => {
+    if (data.password !== data.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+
+    setPassword(data.password);
+    nextHandler();
+  };
 
   return (
     <View className="w-full flex-1">
@@ -58,7 +70,7 @@ export function RegisterStep4({ nextHandler }: StepType) {
                   }
                 </InputIcon>
               </InputBase>
-              <ButtonBase color="success" onPress={nextHandler}>
+              <ButtonBase color="success" onPress={handleSubmit(onSubmit)}>
                 <ButtonLabel>Finalizar</ButtonLabel>
                 <ButtonIcon>
                   {({ fill, size }) => <Icon.Success fill={fill} size={size} />}

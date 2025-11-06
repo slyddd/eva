@@ -1,14 +1,17 @@
-import { RegisterStep4 } from '@components/auth/register/step4';
-import { RegisterStep1 } from '@components/auth/register/step1';
-import { RegisterStep2 } from '@components/auth/register/step2';
-import { RegisterStep3 } from '@components/auth/register/step3';
 import { useThemeStore } from '@/components/ui/theme/theme.store';
+import {
+  RegisterStep1,
+  RegisterStep2,
+  RegisterStep3,
+  RegisterStep4,
+} from '@components/auth/register_steps';
+import { useRegisterStore } from '@components/auth/stores/register.store';
+import { ButtonBase, ButtonLabel } from '@ui/button';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useEffect, useMemo } from 'react';
 import { ColorValue, PixelRatio, Text, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { ButtonBase, ButtonLabel } from '@ui/button';
 
 const steps = [RegisterStep1, RegisterStep2, RegisterStep3, RegisterStep4];
 
@@ -17,6 +20,7 @@ export default function Register() {
   const { gradients } = useThemeStore();
   const navigation = useNavigation();
   const router = useRouter();
+  const { getUser } = useRegisterStore();
 
   // Ensure step is a valid number and within bounds
   const currentStep = useMemo(() => {
@@ -50,7 +54,9 @@ export default function Register() {
     if (currentStep < maxSteps) {
       router.push(`/register/${currentStep + 1}`);
     } else {
-      router.push('/(dashboard)');
+      const userData = getUser();
+      console.log('User Data:', userData);
+      // router.push('/(dashboard)');
     }
   };
 

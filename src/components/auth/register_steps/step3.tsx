@@ -4,25 +4,20 @@ import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { InputBase, InputField } from '@ui/input';
 import { SwitchBase, SwitchIcon } from '@ui/switch';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PixelRatio, Text, View } from 'react-native';
 import { StepType } from './step.type';
+import { useRegisterStore } from '../stores/register.store';
 
 export function RegisterStep3({ nextHandler }: StepType) {
-  const { control } = useForm();
-  const [sex, setSex] = useState<'man' | 'woman'>('man');
-  const [avatar, setAvatar] = useState(
-    genConfig({
-      hatStyle: 'none',
-      sex,
-    }),
-  );
+  const { control, handleSubmit } = useForm();
+  const { genre, setGenre, avatar, setAvatar, setUserName } =
+    useRegisterStore();
 
   // Toggle sex and update avatar
   const handleSexToggle = () => {
-    const newSex = sex === 'man' ? 'woman' : 'man';
-    setSex(newSex);
+    const newSex = genre === 'man' ? 'woman' : 'man';
+    setGenre(newSex);
     setAvatar(
       genConfig({
         hatStyle: 'none',
@@ -36,9 +31,14 @@ export function RegisterStep3({ nextHandler }: StepType) {
     setAvatar(
       genConfig({
         hatStyle: 'none',
-        sex,
+        sex: genre,
       }),
     );
+  };
+
+  const onSubmit = (data: any) => {
+    setUserName(data.username);
+    nextHandler();
   };
 
   return (
@@ -88,7 +88,7 @@ export function RegisterStep3({ nextHandler }: StepType) {
           </View>
         </View>
       </View>
-      <ButtonBase onPress={nextHandler}>
+      <ButtonBase onPress={handleSubmit(onSubmit)}>
         <ButtonLabel>Siguiente</ButtonLabel>
         <ButtonIcon>
           {({ fill, size }) => <Icon.Right fill={fill} size={size} />}
