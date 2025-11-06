@@ -1,6 +1,6 @@
-import { AvatarFullConfig, genConfig } from '@zamplyy/react-native-nice-avatar';
 import { create } from 'zustand';
 import { UserProperties } from './stores.type';
+import { AvatarFullConfig, genConfig } from '@ui/avatar';
 
 // Define properties for the user state
 interface RegisterState extends UserProperties {
@@ -9,7 +9,7 @@ interface RegisterState extends UserProperties {
   setUserName: (userName: string) => void;
   setGenre: (genre: 'man' | 'woman') => void;
   setAvatar: (avatar: AvatarFullConfig) => void;
-  getUser: () => { password: string } & UserProperties;
+  getUser: () => UserProperties & { password: string };
 }
 
 /*
@@ -40,7 +40,7 @@ export const useRegisterStore = create<RegisterState>()((set, get) => {
     setAvatar: (avatar: AvatarFullConfig) => set({ avatar }),
     getUser: () => {
       const { userName, genre, avatar, password } = get();
-      return { userName, genre, avatar: JSON.stringify(avatar), password };
+      return { userName, genre, avatar, password };
     },
   };
 });

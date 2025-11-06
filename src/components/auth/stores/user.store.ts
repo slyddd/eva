@@ -11,7 +11,8 @@ import { AvatarFullConfig, genConfig } from '@ui/avatar';
 
 // Define properties for the user state
 interface UserState extends UserProperties {
-  setUser: (user: UserProperties) => void;
+  id: string;
+  setUser: (user: UserProperties & { id: string }) => void;
   clear: () => void;
 }
 
@@ -33,14 +34,16 @@ export const useUserStore = create<UserState>()(
 
       return {
         // Properties
+        id: '',
         userName: '',
         genre: 'man',
         avatar: genConfig(defaultAvatarConfig),
 
         // Methods
-        setUser: (user: UserProperties) =>
+        setUser: (user: UserProperties & { id: string }) =>
           // NOTE: this function is used to set the user data and persist the state
           set({
+            id: user.id,
             userName: user.userName,
             genre: user.genre,
             avatar: user.avatar,

@@ -6,6 +6,7 @@ import {
   RegisterStep4,
 } from '@components/auth/register_steps';
 import { useRegisterStore } from '@components/auth/stores/register.store';
+import { useUserStore } from '@components/auth/stores/user.store';
 import { ButtonBase, ButtonLabel } from '@ui/button';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
@@ -21,6 +22,7 @@ export default function Register() {
   const navigation = useNavigation();
   const router = useRouter();
   const { getUser } = useRegisterStore();
+  const { setUser } = useUserStore();
 
   // Ensure step is a valid number and within bounds
   const currentStep = useMemo(() => {
@@ -55,8 +57,9 @@ export default function Register() {
       router.push(`/register/${currentStep + 1}`);
     } else {
       const userData = getUser();
-      console.log('User Data:', userData);
-      // router.push('/(dashboard)');
+      setUser({ id: '1', ...userData });
+
+      router.push('/(dashboard)');
     }
   };
 

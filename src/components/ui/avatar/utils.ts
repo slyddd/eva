@@ -36,11 +36,11 @@ interface PickRandomOpt<T> {
 }
 type PickRandomFromList = <T>(
   data: T[],
-  opt?: PickRandomOpt<T | undefined>
+  opt?: PickRandomOpt<T | undefined>,
 ) => T;
 export const pickRandomFromList: PickRandomFromList = (
   data,
-  { avoidList = [], usually = [] } = {}
+  { avoidList = [], usually = [] } = {},
 ) => {
   // Filter out avoid options
   const avoidSet = new Set(avoidList.filter((item) => Boolean(item)));

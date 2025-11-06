@@ -71,19 +71,19 @@ export const EyeBrowStyle = {
   upWoman: 'upWoman',
 } as const;
 
-export type SexType = typeof Sex[keyof typeof Sex];
-export type EarSizeType = typeof EarSize[keyof typeof EarSize];
-export type HatStyleType = typeof HatStyle[keyof typeof HatStyle];
-export type HairStyleType = typeof HairStyle[keyof typeof HairStyle];
-export type HairStyleManType = typeof HairStyleMan[keyof typeof HairStyleMan];
+export type SexType = (typeof Sex)[keyof typeof Sex];
+export type EarSizeType = (typeof EarSize)[keyof typeof EarSize];
+export type HatStyleType = (typeof HatStyle)[keyof typeof HatStyle];
+export type HairStyleType = (typeof HairStyle)[keyof typeof HairStyle];
+export type HairStyleManType = (typeof HairStyleMan)[keyof typeof HairStyleMan];
 export type HairStyleWomanType =
-  typeof HairStyleWoman[keyof typeof HairStyleWoman];
-export type EyeStyleType = typeof EyeStyle[keyof typeof EyeStyle];
-export type GlassesStyleType = typeof GlassesStyle[keyof typeof GlassesStyle];
-export type NoseStyleType = typeof NoseStyle[keyof typeof NoseStyle];
-export type MouthStyleType = typeof MouthStyle[keyof typeof MouthStyle];
-export type ShirtStyleType = typeof ShirtStyle[keyof typeof ShirtStyle];
-export type EyeBrowStyleType = typeof EyeBrowStyle[keyof typeof EyeBrowStyle];
+  (typeof HairStyleWoman)[keyof typeof HairStyleWoman];
+export type EyeStyleType = (typeof EyeStyle)[keyof typeof EyeStyle];
+export type GlassesStyleType = (typeof GlassesStyle)[keyof typeof GlassesStyle];
+export type NoseStyleType = (typeof NoseStyle)[keyof typeof NoseStyle];
+export type MouthStyleType = (typeof MouthStyle)[keyof typeof MouthStyle];
+export type ShirtStyleType = (typeof ShirtStyle)[keyof typeof ShirtStyle];
+export type EyeBrowStyleType = (typeof EyeBrowStyle)[keyof typeof EyeBrowStyle];
 
 export interface AvatarConfig {
   sex?: SexType;
@@ -115,7 +115,5 @@ export interface NiceAvatarProps extends AvatarConfig {
 }
 
 export type GenConfigFunc = (
-  config?: AvatarFullConfig
+  config?: AvatarFullConfig,
 ) => Required<AvatarFullConfig>;
-
-export declare const genConfig: GenConfigFunc;

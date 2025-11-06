@@ -1,3 +1,4 @@
+import { useUserStore } from '@components/auth/stores/user.store';
 import { PatientsCard } from '@components/dashboard/patientsCard';
 import { RecentCard } from '@components/dashboard/recentCard';
 import { Avatar } from '@ui/avatar';
@@ -78,13 +79,14 @@ const patientsPlaceholder: Patient[] = [
 export default function Dashboard() {
   const { control } = useForm();
   const { colors } = useThemeStore();
+  const { userName, avatar } = useUserStore();
 
   return (
     <View className="flex-1 items-center gap-4 p-4">
       <View className="flex w-full flex-row items-center justify-start">
-        <Avatar size={40} />
+        <Avatar size={40} {...avatar} />
         <View className="ml-2 flex flex-col items-start justify-center">
-          <Text className="text-lg font-bold text-foreground">User</Text>
+          <Text className="text-lg font-bold text-foreground">{userName}</Text>
           <Text className="text-sm text-foreground/60">
             0 pacientes registrados
           </Text>
