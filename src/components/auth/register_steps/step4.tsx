@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { PixelRatio, Text, View } from 'react-native';
 import { StepType } from './step.type';
 import { useRegisterStore } from '../stores/register.store';
+import bcrypt from 'bcrypt-react-native';
 
 export function RegisterStep4({ nextHandler }: StepType) {
   const blurhash = 'L5H?@-?b00%M~qj[ayj[ayj[ayj['; //TODO: Replace with img blur hash
@@ -15,14 +16,21 @@ export function RegisterStep4({ nextHandler }: StepType) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { setPassword } = useRegisterStore();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     if (data.password !== data.confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
 
-    setPassword(data.password);
-    nextHandler();
+    try {
+      const salt = await bcrypt.getSalt(10);
+      const hash = await bcrypt.hash(salt, data.password);
+
+      setPassword(hash);
+      nextHandler();
+    } catch (e) {
+      console.log({ e });
+    }
   };
 
   return (
