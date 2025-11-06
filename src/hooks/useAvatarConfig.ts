@@ -1,16 +1,16 @@
 import { genConfig } from '@ui/avatar';
 import { useThemeStore } from '@ui/theme/theme.store';
 
-export function useAvatarBySex(sex: 'h' | 'm') {
+export function useAvatarBySex(sex: 'man' | 'woman') {
   const { colors } = useThemeStore();
   const avatarConfig = genConfig({
     bgColor: colors.primary,
     earSize: 'small',
     hairColor: '#fff',
-    eyeBrowStyle: sex === 'h' ? 'up' : 'upWoman',
+    eyeBrowStyle: sex === 'man' ? 'up' : 'upWoman',
     eyeStyle: 'circle',
     glassesStyle: 'round',
-    hairStyle: sex === 'h' ? 'thick' : 'womanLong',
+    hairStyle: sex === 'man' ? 'thick' : 'womanLong',
     hatStyle: 'none',
     mouthStyle: 'peace',
     noseStyle: 'round',

@@ -4,6 +4,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@db/*": ["src/db/*"],
       "@data/*": ["src/data/*"],
       "@ui/*": ["src/components/ui/*"],
       "@components/*": ["src/components/*"],

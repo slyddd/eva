@@ -1,85 +1,27 @@
 import { useUserStore } from '@components/auth/stores/user.store';
 import { PatientsCard } from '@components/dashboard/patientsCard';
 import { RecentCard } from '@components/dashboard/recentCard';
+import { db } from '@db/drizzle';
+import { Participant } from '@db/schema';
 import { Avatar } from '@ui/avatar';
 import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { InputBase, InputField, InputIcon } from '@ui/input';
-import { PillColor } from '@ui/pill/pill.context';
 import { useThemeStore } from '@ui/theme/theme.store';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { ScrollView, Text, View } from 'react-native';
 import { FadeWrapper } from 'rn-fade-wrapper';
-
-interface Patient {
-  id: number;
-  name: string;
-  sex: 'h' | 'm';
-  age: number;
-  tags?: { name: string; color: PillColor }[];
-}
-
-const patientsPlaceholder: Patient[] = [
-  { id: 1, name: 'Paciente 1', sex: 'h', age: 60 },
-  {
-    id: 2,
-    name: 'Paciente 2',
-    sex: 'm',
-    age: 45,
-    tags: [
-      {
-        name: 'Diabetes',
-        color: 'primary',
-      },
-    ],
-  },
-  { id: 3, name: 'Paciente 3', sex: 'h', age: 30 },
-  { id: 4, name: 'Paciente 4', sex: 'm', age: 50 },
-  {
-    id: 5,
-    name: 'Paciente 5',
-    sex: 'h',
-    age: 40,
-    tags: [
-      {
-        name: 'Hipertensión',
-        color: 'error',
-      },
-    ],
-  },
-  { id: 6, name: 'Paciente 1', sex: 'h', age: 60 },
-  {
-    id: 7,
-    name: 'Paciente 2',
-    sex: 'm',
-    age: 45,
-    tags: [
-      {
-        name: 'Diabetes',
-        color: 'primary',
-      },
-    ],
-  },
-  { id: 8, name: 'Paciente 3', sex: 'h', age: 30 },
-  { id: 9, name: 'Paciente 4', sex: 'm', age: 50 },
-  {
-    id: 10,
-    name: 'Paciente 5',
-    sex: 'h',
-    age: 40,
-    tags: [
-      {
-        name: 'Hipertensión',
-        color: 'error',
-      },
-    ],
-  },
-];
 
 export default function Dashboard() {
   const { control } = useForm();
   const { colors } = useThemeStore();
   const { userName, avatar } = useUserStore();
+  const { data: patients } = useLiveQuery(db.select().from(Participant));
+  const router = useRouter();
+
+  const recentPatients = patients?.slice(0, 5) || [];
 
   return (
     <View className="flex-1 items-center gap-4 p-4">
@@ -88,7 +30,7 @@ export default function Dashboard() {
         <View className="ml-2 flex flex-col items-start justify-center">
           <Text className="text-lg font-bold text-foreground">{userName}</Text>
           <Text className="text-sm text-foreground/60">
-            0 pacientes registrados
+            {patients.length} pacientes registrados
           </Text>
         </View>
       </View>
@@ -106,7 +48,7 @@ export default function Dashboard() {
         </ButtonBase>
       </View>
       <View className="w-full gap-3">
-        <Text className="text-sm font-bold text-foreground">Recientes</Text>
+        <Text className="text-md font-bold text-foreground">Recientes</Text>
         <FadeWrapper
           size={20}
           style={{
@@ -127,18 +69,24 @@ export default function Dashboard() {
             }}
             horizontal
           >
-            {[...Array(5)].map((_, index) => (
-              <RecentCard
-                key={index}
-                sex={index % 2 === 0 ? 'h' : 'm'}
-                name="juan"
-              />
-            ))}
+            {recentPatients.length > 0 ? (
+              recentPatients.map((patient, index) => (
+                <RecentCard
+                  key={patient.id}
+                  sex={patient.genre}
+                  name={`${patient.firstName} ${patient.lastName}`}
+                />
+              ))
+            ) : (
+              <Text className="text-sm text-foreground/60">
+                No hay pacientes recientes
+              </Text>
+            )}
           </ScrollView>
         </FadeWrapper>
       </View>
       <View className="w-full flex-1 gap-3">
-        <Text className="text-sm font-bold text-foreground">Pacientes</Text>
+        <Text className="text-md font-bold text-foreground">Pacientes</Text>
         <ScrollView
           contentContainerStyle={{
             gap: 10,
@@ -146,12 +94,36 @@ export default function Dashboard() {
             paddingHorizontal: 10,
           }}
         >
-          {patientsPlaceholder.map(({ id, ...patient }) => (
-            <PatientsCard key={id} {...patient} />
-          ))}
+          {patients.length > 0 ? (
+            patients.map(({ id, ...patient }) => {
+              // combine the 4 name fields into one
+              const fullName =
+                `${patient.firstName} ${patient.middleName} ${patient.lastName} ${patient.secondLastName}`.trim();
+              const age =
+                new Date().getFullYear() -
+                new Date(patient.bornDate).getFullYear();
+              return (
+                <PatientsCard
+                  key={id}
+                  age={age}
+                  name={fullName}
+                  sex={patient.genre}
+                />
+              );
+            })
+          ) : (
+            <Text className="text-sm text-foreground/60">
+              No hay pacientes registrados
+            </Text>
+          )}
         </ScrollView>
         <View className="absolute -bottom-5 -right-5 z-30">
-          <ButtonBase width={60} size="sm" style={{ margin: 20 }}>
+          <ButtonBase
+            width={60}
+            size="sm"
+            style={{ margin: 20 }}
+            onPress={() => router.push('/patients/addPatient')}
+          >
             <ButtonLabel>Añadir Paciente</ButtonLabel>
             <ButtonIcon>
               {({ fill, size }) => <Icon.Info fill={fill} size={size} />}

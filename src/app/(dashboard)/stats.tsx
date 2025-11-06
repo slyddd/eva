@@ -1,3 +1,5 @@
+import { useUserStore } from '@components/auth/stores/user.store';
+import { batteries } from '@data/batteries';
 import { Avatar } from '@ui/avatar';
 import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import {
@@ -11,11 +13,13 @@ import { Icon } from '@ui/icon';
 import { PixelRatio, ScrollView, Text, View } from 'react-native';
 
 export default function Stats() {
+  const { userName, avatar } = useUserStore();
+
   return (
     <View className="flex-1 items-center justify-center">
       <View className="w-full flex-row items-center gap-4 p-4">
-        <Avatar size={PixelRatio.getPixelSizeForLayoutSize(30)} />
-        <Text className="text-lg font-bold text-foreground">User</Text>
+        <Avatar size={PixelRatio.getPixelSizeForLayoutSize(30)} {...avatar} />
+        <Text className="text-lg font-bold text-foreground">{userName}</Text>
       </View>
       <ScrollView contentContainerClassName="pb-20">
         <View className="flex-1 items-center gap-4 py-4">
@@ -69,10 +73,10 @@ export default function Stats() {
             </CardContent>
           </CardBase>
           <Text className="font-bold text-foreground">Informe por Bateria</Text>
-          {[...Array(5)].map((_, index) => (
+          {batteries.map((batt, index) => (
             <CardBase hasShadow={false} key={index} width={150}>
               <CardHeader>
-                <CardTitle>Bateria {index + 1}</CardTitle>
+                <CardTitle>{batt.name}</CardTitle>
                 <ButtonBase hasShadow={false} width="auto">
                   <ButtonIcon>
                     {(props) => <Icon.Download {...props} />}

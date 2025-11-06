@@ -1,4 +1,5 @@
 import '@/global.css';
+import { loadExercises, useDrizzle } from '@db/drizzle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeStore } from '@ui/theme/theme.store';
 import { Image } from 'expo-image';
@@ -10,6 +11,7 @@ export default function Index() {
   const router = useRouter();
   const [status, setStatus] = useState('Iniciando aplicación...');
   const { colors } = useThemeStore();
+  const { success, error } = useDrizzle();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -34,10 +36,24 @@ export default function Index() {
     };
 
     const timer = setTimeout(async () => {
+      if (!success) {
+        setStatus('Inicializando base de datos...');
+        return;
+      }
+
+      if (error) {
+        setStatus('Error inicializando base de datos');
+        console.error('Database initialization error:', error);
+        return;
+      }
+
+      setStatus('Cargando ejercicios...');
+      await loadExercises();
+
       return await getUserData();
     }, 2000);
     return () => clearTimeout(timer);
-  });
+  }, [router, success, error]);
 
   return (
     <View className="flex flex-1 flex-col items-center justify-center gap-10">

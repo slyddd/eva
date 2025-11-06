@@ -6,7 +6,7 @@ import { PixelRatio } from 'react-native';
 
 interface RecentCardProps {
   name: string;
-  sex: 'h' | 'm';
+  sex: 'man' | 'woman';
 }
 
 export function RecentCard({ name, sex }: RecentCardProps) {

@@ -14,7 +14,7 @@ import { PixelRatio, Text } from 'react-native';
 
 interface RecentCardProps {
   name: string;
-  sex: 'h' | 'm';
+  sex: 'man' | 'woman';
   age: number;
   tags?: { name: string; color: PillColor }[];
 }
@@ -44,7 +44,7 @@ export function PatientsCard({ name, sex, age, tags }: RecentCardProps) {
                 <Text style={{ color: fill, fontSize: size }}>
                   {age} años -
                 </Text>
-                {sex === 'm' ? (
+                {sex === 'man' ? (
                   <Icon.Male fill={fill} size={size} />
                 ) : (
                   <Icon.Female fill={fill} size={size} />

@@ -7,6 +7,8 @@ import {
 } from '@components/auth/register_steps';
 import { useRegisterStore } from '@components/auth/stores/register.store';
 import { useUserStore } from '@components/auth/stores/user.store';
+import { db } from '@db/drizzle';
+import { Genres, User } from '@db/schema';
 import { ButtonBase, ButtonLabel } from '@ui/button';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
@@ -52,14 +54,28 @@ export default function Register() {
     });
   }, [navigation, currentStep, maxSteps]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < maxSteps) {
       router.push(`/register/${currentStep + 1}`);
     } else {
-      const userData = getUser();
-      setUser({ id: '1', ...userData });
+      try {
+        const userData = getUser();
+        const [{ newUserId }] = await db
+          .insert(User)
+          .values({
+            avatar: JSON.stringify(userData.avatar),
+            username: userData.userName,
+            genre: userData.genre as Genres,
+            password: userData.password,
+          })
+          .returning({ newUserId: User.id });
 
-      router.push('/(dashboard)');
+        setUser({ id: newUserId, ...userData });
+
+        router.push('/(dashboard)');
+      } catch (error) {
+        console.error('Error creating user:', error);
+      }
     }
   };
 

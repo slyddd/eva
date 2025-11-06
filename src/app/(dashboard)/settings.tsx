@@ -1,9 +1,11 @@
+import { useUserStore } from '@components/auth/stores/user.store';
 import { Avatar } from '@ui/avatar';
 import { ButtonBase, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { InputBase, InputField, InputIcon } from '@ui/input';
 import { PillBase, PillLabel } from '@ui/pill';
 import { useThemeStore } from '@ui/theme/theme.store';
+import { useRouter } from 'expo-router';
 import { useReducer } from 'react';
 import { useForm } from 'react-hook-form';
 import { PixelRatio, ScrollView, Text, View } from 'react-native';
@@ -31,6 +33,8 @@ export default function Settings() {
     newPassword: false,
     confirmPassword: false,
   });
+  const { clear, avatar, userName } = useUserStore();
+  const router = useRouter();
 
   return (
     <View className="flex-1 items-center justify-center">
@@ -39,8 +43,9 @@ export default function Settings() {
           <Avatar
             size={PixelRatio.getPixelSizeForLayoutSize(60)}
             shape="rounded"
+            {...avatar}
           />
-          <Text className="text-2xl font-bold text-foreground">User</Text>
+          <Text className="text-2xl font-bold text-foreground">{userName}</Text>
         </View>
         <View className="flex-1 items-center gap-10">
           <View className="items-center gap-4">
@@ -131,7 +136,10 @@ export default function Settings() {
                 width={45}
                 size="sm"
                 color="error"
-                onPress={() => console.log('Logout')}
+                onPress={() => {
+                  clear();
+                  router.replace('/introduction');
+                }}
               >
                 <ButtonLabel>Cerrar Sesion</ButtonLabel>
               </ButtonBase>
