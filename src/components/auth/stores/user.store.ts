@@ -64,6 +64,7 @@ export const useUserStore = create<UserState>()(
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         // This is the data to be saved in AsyncStorage
+        id: state.id,
         userName: state.userName,
         genre: state.genre,
         avatar: state.avatar,

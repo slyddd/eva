@@ -29,6 +29,6 @@ export const twoMinuteStep: Exercise = {
   materials: [],
   scales: { m: menScales, w: womanScales },
   timer: 120,
-  img: 'https://placehold.co/600x600',
+  img: require('./assets/twominutesstep.png'),
   units: 'rep',
 };

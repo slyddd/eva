@@ -28,7 +28,7 @@ export const chairStand: Exercise = {
     'El ejercicio consiste en evaluar la fuerza del tren inferior mediante un test en el que el participante, sentado en el centro de una silla con la espalda recta,los pies apoyados en el suelo y los brazos cruzados sobre el pecho, debe levantarse y volver a sentarse el mayor número de veces posibles en 30 segundos; se cuenta como repetición completa si al finalizar el movimiento ha realizado al menos la mitad del levantamiento y el sentado, y antes de iniciar el test se practica el movimiento una o dos veces tras una demostración inicial (primero de forma lenta para mostrar la técnica correcta y luego a mayor velocidad para enfatizar la necesidad de rapidez sin perder seguridad), además de asegurar que la silla esté estable (respaldada en la pared o sostenida) y vigilar que el participante no presente problemas de equilibrio, deteniendo el test de inmediato si se siente dolor.',
   materials: ['silla'],
   scales: { m: menScales, w: womanScales },
-  img: 'https://placehold.co/600x600',
+  img: require('./assets/chairstand.png'),
   timer: 30,
   units: 'rep',
 };

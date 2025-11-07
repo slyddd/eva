@@ -3,11 +3,12 @@ module.exports = function (api) {
   return {
     presets: [
       ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
+      './babelInteropNoWorklets.js',
       'nativewind/babel',
     ],
     plugins: [
-      'react-native-reanimated/plugin',
       ['inline-import', { extensions: ['.sql'] }],
+      'react-native-reanimated/plugin',
     ],
   };
 };

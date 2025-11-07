@@ -3,7 +3,7 @@ import { ButtonBase, ButtonIcon } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { shadows } from '@ui/shadows';
 import { MotiView } from 'moti';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { useTimer } from './hooks/useTimer';
 
@@ -16,9 +16,10 @@ interface TimerProps {
     time: number;
     isPlaying: boolean;
   }) => void;
+  onTick?: (args: { time: number; isPlaying: boolean }) => void;
 }
 
-export function Timer({ time = 0, children }: TimerProps) {
+export function Timer({ time = 0, children, onTick }: TimerProps) {
   const {
     pause,
     play,
@@ -26,6 +27,12 @@ export function Timer({ time = 0, children }: TimerProps) {
     time: timerTime,
   } = useTimer({ startTime: time * 1000 });
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (typeof onTick === 'function') {
+      onTick({ time: timerTime, isPlaying });
+    }
+  }, [timerTime, isPlaying, onTick]);
 
   return (
     <>

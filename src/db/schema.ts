@@ -1,4 +1,4 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createId } from '@paralleldrive/cuid2';
 
 // Enum para géneros
@@ -54,6 +54,7 @@ export const ExerciseLog = sqliteTable('ExerciseLog', {
     .$defaultFn(() => createId()),
   date: text().notNull(),
   result: text(),
+  isFunctional: integer({ mode: 'boolean' }).notNull().default(false),
   exerciseId: text()
     .notNull()
     .references(() => Exercise.id),

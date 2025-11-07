@@ -21,8 +21,9 @@ export default function Index() {
         const { state: userData } = JSON.parse(data || '{}');
 
         setStatus('Datos del usuario obtenidos');
+        console.log('User Data:', userData);
 
-        if (userData && userData.userName) {
+        if (userData && userData.id) {
           setStatus('Redirigiendo a la página de inicio...');
           return router.replace('/(dashboard)');
         }

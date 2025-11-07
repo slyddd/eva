@@ -15,6 +15,13 @@
       "when": 1762401999462,
       "tag": "0001_wise_blackheart",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1762461957995,
+      "tag": "0002_amazing_venom",
+      "breakpoints": true
     }
   ]
 }

@@ -32,21 +32,7 @@ export function RegisterStep2({ nextHandler }: StepType) {
           </ButtonBase>
         </View>
       </View>
-      <View className="w-full flex-1 flex-col items-center justify-center gap-5">
-        <Image
-          source="https://placehold.co/400"
-          placeholder={{
-            blurhash,
-          }}
-          contentFit="cover"
-          style={{
-            width: PixelRatio.getPixelSizeForLayoutSize(120),
-            height: PixelRatio.getPixelSizeForLayoutSize(120),
-            borderRadius: 9999,
-          }}
-          transition={1000}
-        />
-      </View>
+      <View className="w-full flex-1 flex-col items-center justify-center gap-5"></View>
     </View>
   );
 }

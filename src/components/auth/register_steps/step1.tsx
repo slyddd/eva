@@ -21,7 +21,7 @@ export function RegisterStep1({ nextHandler }: StepType) {
       </View>
       <View className="w-full flex-1 flex-col items-end justify-end">
         <Image
-          source="https://placehold.co/400"
+          source={require('@/assets/hi.png')}
           placeholder={{
             blurhash,
           }}

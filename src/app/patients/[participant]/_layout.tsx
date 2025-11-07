@@ -1,13 +1,24 @@
 import { useAvatarBySex } from '@/hooks/useAvatarConfig';
+import { db } from '@db/drizzle';
+import { Participant } from '@db/schema';
 import { Avatar } from '@ui/avatar';
 import { useThemeStore } from '@ui/theme/theme.store';
+import { eq } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { PixelRatio } from 'react-native';
 
 export default function PatientLayout() {
   const { participant } = useLocalSearchParams();
   const { colors } = useThemeStore();
-  const avatarConfig = useAvatarBySex('m');
+  const avatarConfig = useAvatarBySex('man');
+
+  const { data: patient } = useLiveQuery(
+    db
+      .select()
+      .from(Participant)
+      .where(eq(Participant.id, participant as string)),
+  );
 
   return (
     <Stack
@@ -22,7 +33,7 @@ export default function PatientLayout() {
             {...avatarConfig}
           />
         ),
-        headerTitle: participant as string,
+        headerTitle: `${patient[0]?.firstName ?? 'jhon'} ${patient[0]?.lastName ?? 'Doe'}`,
         contentStyle: {
           backgroundColor: 'transparent',
         },

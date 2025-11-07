@@ -5,16 +5,17 @@ import { useRouter } from 'expo-router';
 import { PixelRatio } from 'react-native';
 
 interface RecentCardProps {
+  id: string;
   name: string;
   sex: 'man' | 'woman';
 }
 
-export function RecentCard({ name, sex }: RecentCardProps) {
+export function RecentCard({ id, name, sex }: RecentCardProps) {
   const router = useRouter();
   const avatarConfig = useAvatarBySex(sex);
 
   return (
-    <CardBase onPress={() => router.push(`/patients/${name}`)}>
+    <CardBase onPress={() => router.push(`/patients/${id}`)}>
       <Avatar
         size={PixelRatio.getPixelSizeForLayoutSize(20)}
         shape="rounded"

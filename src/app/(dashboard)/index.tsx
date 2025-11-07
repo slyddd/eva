@@ -8,6 +8,7 @@ import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { InputBase, InputField, InputIcon } from '@ui/input';
 import { useThemeStore } from '@ui/theme/theme.store';
+import { eq } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
@@ -17,8 +18,13 @@ import { FadeWrapper } from 'rn-fade-wrapper';
 export default function Dashboard() {
   const { control } = useForm();
   const { colors } = useThemeStore();
-  const { userName, avatar } = useUserStore();
-  const { data: patients } = useLiveQuery(db.select().from(Participant));
+  const { userName, avatar, id } = useUserStore();
+  const { data: patients } = useLiveQuery(
+    db
+      .select()
+      .from(Participant)
+      .where(eq(Participant.userId, id || '')),
+  );
   const router = useRouter();
 
   const recentPatients = patients?.slice(0, 5) || [];
@@ -73,6 +79,7 @@ export default function Dashboard() {
               recentPatients.map((patient, index) => (
                 <RecentCard
                   key={patient.id}
+                  id={patient.id}
                   sex={patient.genre}
                   name={`${patient.firstName} ${patient.lastName}`}
                 />
@@ -105,6 +112,7 @@ export default function Dashboard() {
               return (
                 <PatientsCard
                   key={id}
+                  id={id}
                   age={age}
                   name={fullName}
                   sex={patient.genre}

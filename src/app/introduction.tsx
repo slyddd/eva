@@ -10,6 +10,7 @@ export default function Introduction() {
   const [position, setPosition] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | number | null>(null);
   const { colors } = useThemeStore();
+  const images = [require('@/assets/healt.png'), require('@/assets/stats.png')];
   const blurhash =
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   const router = useRouter();
@@ -17,7 +18,12 @@ export default function Introduction() {
   // Helper to start the interval
   const startInterval = () => {
     intervalRef.current = setInterval(() => {
-      setPosition((prev) => (prev + 1) % 5);
+      setPosition((prev) => {
+        if (prev === images.length - 1) {
+          return 0;
+        }
+        return prev + 1;
+      });
     }, 5000);
   };
 
@@ -42,7 +48,7 @@ export default function Introduction() {
           Adentrate a las funciones de EVA+
         </Text>
         <Image
-          source="https://placehold.co/400"
+          source={images[position]}
           placeholder={{
             blurhash,
           }}
@@ -55,7 +61,7 @@ export default function Introduction() {
           transition={1000}
         />
         <View className="flex flex-row items-center justify-center gap-3">
-          {[...Array(5)].map((_, index) => (
+          {images.map((_, index) => (
             <MotiPressable
               key={index}
               onPress={() => handleDotPress(index)}

@@ -53,6 +53,9 @@ export default function Login() {
       });
       return;
     }
+
+    console.log('Usuario autenticado:', user[0]);
+
     setUser({
       userName: user[0].username,
       avatar: JSON.parse(user[0].avatar),

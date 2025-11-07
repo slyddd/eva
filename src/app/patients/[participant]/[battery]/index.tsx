@@ -1,13 +1,20 @@
 import { batteries } from '@data/batteries';
+import { useBatteryStore } from '@data/stores/excercise.store';
 import { ButtonBase, ButtonLabel } from '@ui/button';
 import { PillBase, PillLabel } from '@ui/pill';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 export default function BatteryInfo() {
   const { battery, participant } = useLocalSearchParams();
+  const { resetValues } = useBatteryStore();
   const router = useRouter();
   const batt = batteries.find((b) => b.id === battery);
+
+  useEffect(() => {
+    resetValues();
+  }, [resetValues]);
 
   if (!batt) {
     return (

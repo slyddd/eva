@@ -30,5 +30,5 @@ export const armCurl: Exercise = {
   scales: { m: menScales, w: womanScales },
   timer: 30,
   units: 'rep',
-  img: 'https://placehold.co/600x600',
+  img: require('./assets/armcurl.png'),
 };

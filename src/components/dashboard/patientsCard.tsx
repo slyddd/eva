@@ -13,13 +13,14 @@ import { useRouter } from 'expo-router';
 import { PixelRatio, Text } from 'react-native';
 
 interface RecentCardProps {
+  id: string;
   name: string;
   sex: 'man' | 'woman';
   age: number;
   tags?: { name: string; color: PillColor }[];
 }
 
-export function PatientsCard({ name, sex, age, tags }: RecentCardProps) {
+export function PatientsCard({ id, name, sex, age, tags }: RecentCardProps) {
   const avatarConfig = useAvatarBySex(sex);
   const router = useRouter();
 
@@ -27,7 +28,7 @@ export function PatientsCard({ name, sex, age, tags }: RecentCardProps) {
     <CardBase
       style={{ width: '100%' }}
       hasShadow={false}
-      onPress={() => router.push(`/patients/${name}`)}
+      onPress={() => router.push(`/patients/${id}`)}
     >
       <Avatar
         size={PixelRatio.getPixelSizeForLayoutSize(30)}

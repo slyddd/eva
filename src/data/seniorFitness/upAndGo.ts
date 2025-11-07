@@ -29,6 +29,6 @@ export const upAndGo: Exercise = {
   materials: ['silla', 'cinta métrica'],
   scales: { m: menScales, w: womanScales },
   timer: 0,
-  img: 'https://placehold.co/600x600',
+  img: require('./assets/upandgo.png'),
   units: 'seg',
 };

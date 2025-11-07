@@ -1,0 +1,1 @@
+ALTER TABLE `ExerciseLog` ADD `isFunctional` integer DEFAULT false NOT NULL;

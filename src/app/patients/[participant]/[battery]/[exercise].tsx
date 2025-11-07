@@ -1,4 +1,5 @@
 import { batteries } from '@data/batteries';
+import { useBatteryStore } from '@data/stores/excercise.store';
 import { ButtonBase, ButtonIcon, ButtonLabel } from '@ui/button';
 import { Icon } from '@ui/icon';
 import { ElevateOnKeyboard, InputBase, InputField, InputIcon } from '@ui/input';
@@ -12,10 +13,11 @@ import { Text, View } from 'react-native';
 
 export default function Exercise() {
   const { battery, participant, exercise } = useLocalSearchParams();
-  const { control, setValue, getValues } = useForm();
+  const { control, setValue, getValues, handleSubmit } = useForm();
   const [showInfo, setShowInfo] = useState(false);
   const router = useRouter();
   const batt = batteries.find((b) => b.id === battery);
+  const { defValue } = useBatteryStore();
 
   if (!batt) {
     return (
@@ -37,6 +39,20 @@ export default function Exercise() {
       </View>
     );
   }
+
+  const onSubmit = (formData: any) => {
+    defValue({ id: exercise as string, value: Number(formData.result) });
+
+    console.log('Submitted data:', formData);
+
+    router.push(
+      `/patients/${participant}/${battery}/${
+        currentIndex + 1 < batt.excercises.length
+          ? batt.excercises[currentIndex + 1].id
+          : 'results'
+      }`,
+    );
+  };
 
   return (
     <ElevateOnKeyboard>
@@ -76,19 +92,19 @@ export default function Exercise() {
           </View>
           {typeof data.timer === 'number' && (
             <View className="w-full items-center justify-center">
-              <Timer time={data.timer}>
-                {({ time, isPlaying }) => {
+              <Timer
+                time={data.timer}
+                onTick={({ time, isPlaying }) => {
                   if (isPlaying || time === 0) {
                     return;
                   }
-
                   if (data.timer === 0) {
                     setValue('result', `${time / 1000}`, {
                       shouldValidate: true,
                     });
                   }
                 }}
-              </Timer>
+              />
             </View>
           )}
           <View className="w-2/3 flex-row items-center justify-center gap-2">
@@ -141,18 +157,7 @@ export default function Exercise() {
               <ButtonIcon>{(props) => <Icon.Left {...props} />}</ButtonIcon>
               <ButtonLabel>Regresar</ButtonLabel>
             </ButtonBase>
-            <ButtonBase
-              width="auto"
-              onPress={() => {
-                router.push(
-                  `/patients/${participant}/${battery}/${
-                    currentIndex + 1 < batt.excercises.length
-                      ? batt.excercises[currentIndex + 1].id
-                      : 'results'
-                  }`,
-                );
-              }}
-            >
+            <ButtonBase width="auto" onPress={handleSubmit(onSubmit)}>
               <ButtonLabel>
                 {currentIndex + 1 < batt.excercises.length
                   ? 'Continuar'

@@ -28,6 +28,6 @@ export const backScratch: Exercise = {
     'El ejercicio evalúa la flexibilidad de los hombros mediante una prueba en la que los participantes, de pie y con la espalda recta, deben intentar tocarse las manos por detrás de la espalda, con un brazo por encima del hombro y el otro por debajo de la espalda; se mide la distancia entre las puntas de los dedos y se registra como positiva si se tocan o negativa si no lo hacen; la puntuación se basa en la mejor de las dos pruebas realizadas, y si el participante no puede alcanzar la posición inicial, se le permite realizarla con ambas piernas extendidas; la prueba debe realizarse en una superficie lisa y segura, con sillas fuera del área de circulación, y se detendrá si algún participante muestra signos de esfuerzo excesivo.',
   materials: ['silla', 'cinta métrica'],
   scales: { m: menScales, w: womanScales },
-  img: 'https://placehold.co/600x600',
+  img: require('./assets/backscratch.png'),
   units: 'cm',
 };

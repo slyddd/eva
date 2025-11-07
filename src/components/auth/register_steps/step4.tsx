@@ -85,19 +85,6 @@ export function RegisterStep4({ nextHandler }: StepType) {
                 </ButtonIcon>
               </ButtonBase>
             </View>
-            <Image
-              source="https://placehold.co/400"
-              placeholder={{
-                blurhash,
-              }}
-              contentFit="cover"
-              style={{
-                width: PixelRatio.getPixelSizeForLayoutSize(80),
-                height: PixelRatio.getPixelSizeForLayoutSize(80),
-                borderRadius: 9999,
-              }}
-              transition={1000}
-            />
           </View>
         </View>
       </ElevateOnKeyboard>
